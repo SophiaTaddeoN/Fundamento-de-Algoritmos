@@ -7,6 +7,8 @@ def cadastro():
 
 #Função Login
 def login():
+    nome = input('Digite o seu nome: \n')
+    user = input('Digite o seu user: \n')
     if nome and user == lista_usuarios:
         print('Login feito com sucesso!')
 
