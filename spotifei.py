@@ -1,25 +1,28 @@
-#menu função
-def menu():
-    ss=1
-#menu sec função
-#cadastre função
+# Função de cadastro
 def cadastro():
-    nome=str(input('Digite o seu nome: \n'))
-    user=str(input('Digite o seu user: \n'))
-    senha=str(input('Digite sua senha: \n'))
-#login função
-def login():
-    user=1
-    senha=1
+    nome = input('Digite o seu nome: \n')
+    user = input('Digite o seu user: \n')
+    senha = input('Digite sua senha: \n')
+    return [nome, user, senha]  # Retorna os dados como uma lista
 
+# Lista para armazenar usuários
+lista_usuarios = []
 
-nummenu=str(input('Digite 1 para se CADASTRAR ou 2 para fazer LOGIN '))
+print('Bem-Vindo(a) ao SPOTIFEI')
 
-
-for num in nummenu:
-    if nummenu=='1':
-        cadastro()
-    elif nummenu =='2':
-        login()   
+while True:
+    nummenu = input('Digite 1 para se CADASTRAR ou 2 para fazer LOGIN: ')
+    
+    if nummenu == '1':
+        dados_usuario = cadastro()
+        lista_usuarios.append(dados_usuario)
+        print("Cadastro realizado com sucesso!")
+        print("Usuários cadastrados:", lista_usuarios)  # Mostra a lista de usuários
+        break
+        
+    elif nummenu == '2':
+        print('Redirecionando para login...') 
+        break  
+        
     else:
-        print('O número digitado é diferente de 1 ou 2, por favor, tente novamente.')     
+        print('Opção inválida. Digite 1 ou 2.')
