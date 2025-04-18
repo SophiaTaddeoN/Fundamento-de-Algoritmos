@@ -39,32 +39,48 @@ def buscar_musica():
     print("Música não encontrada!")
     return False
 
+# Função Gerenciar playlist
 
-#Função Criar Playlist 
+def gerenciar_musica():
+    oq_da_playlist = str(input("O que você deseja fazer? Digite 1 para ADICIONAR uma música a playlist, 2 para REMOVER uma música da playlist e 3 para VISUALIZAR a playlist: "))  
+    if oq_da_playlist == "1":
+        nova_m = str(input("Digite o nome da música á ser adionada: "))
+        lista_musicas.append(nova_m)
+    elif oq_da_playlist == "2":
+        del_m = str(input('Digite o nome da música á ser removida: '))
+        lista_musicas.remove(del_m)
+    elif oq_da_playlist == "3":
+        print(lista_musicas)
+
+#Função Criar playlist
+
 def criar_playlist():
-    nova_playlist=[]
-    nome_playlist=str(input('Digite o nome que você quer dar à playlist: '))
-    nova_playlist.append(nome_playlist)
-
-    print("Digite o nome das músicas que você quer adicionar a sua playlist e de ENTER, quando você estiver satisfeito(a), aperte APENAS ENTER")
-
+    nome_p=str(input('Qual nome você deseja dar a sua playlist? '))
+    m_playlist=[]
+    m_playlist.append(nome_p)
     while True:
-        musicas=input('Música: ')
-
-        if musicas == "":
+        qr_add=str(input('Digite o nome das música que você quer adicionar, quando estiver satisfeito(a), digite 0: '))
+        if qr_add !="0":
+            m_playlist.append(qr_add)
+        if qr_add == "0":
+            lista_playlist.append(m_playlist) 
             break
-        else: 
-            nova_playlist.append(musicas)
-    lista_playlist.append(nova_playlist)
-    print(lista_playlist)
-#listas globais
-lista_usuarios=[]
+         
+
+
+
+
+
+
+# Listas globais
+lista_usuarios = [['Sophia', 'S', '123'], ['Bia', 'B', '123']]
 lista_musicas = ["CINEMA"]
 lista_hist_m_c = []
 lista_hist_m_dc = []
 lista_playlist=[]
 
-
+# Programa principal
+print('Bem-Vindo(a) ao SPOTIFEI')
 
 # Primeiro loop - Cadastro/Login
 while True:
@@ -76,37 +92,32 @@ while True:
         lista_usuarios.append(dados_usuario)  # Adiciona a lista que foi retornada no cadastro em outra lista (listas dentro de listas)
         print("Agora vamos fazer o login!")  # redireciona para o login imediatamente
         if login():
-            escolha = str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST, 3 para VISUALIZAR HISTÓRICO e 4 para SAIR \n"))  
+            escolha = str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST e 3 para VISUALIZAR HISTÓRICO \n"))  
             break
         
     elif nummenu == '2':
         print('Vamos fazer o login!') 
         if login():
-            escolha = str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST, 3 para VISUALIZAR HISTÓRICO  e 4 para SAIR \n"))  
+            escolha = str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST e 3 para VISUALIZAR HISTÓRICO \n"))  
             break  
     
     else:
         print('Opção inválida. Digite 1 ou 2.')
 
-
-
-
-#Menu Secundário
+# Segundo loop - Operações após login
 while True:
     if escolha == "1":
         buscar_musica()
+        break
     
     elif escolha == "2":
-        edt_playlist=str(input("O que você deseja fazer? Digite 1 para CRIAR uma playlist, 2 para REMOVER uma playlist e 3 para VISUALIZAR uma playlist: "))
-        if edt_playlist=='1':
-            criar_playlist()
+        gerenciar_musica()
+        break
     
     elif escolha == "3":
         print(lista_hist_m_c)  # Corrigido para mostrar a lista de músicas curtidas
         print(lista_hist_m_dc)  # Corrigido para mostrar a lista de músicas não curtidas
-        
-    elif escolha == '4':
-        print("Deslogando do SPOTIFEI . . . . . . . .")
-
+        break
+    
     else: 
-        print('Opção inválida. Digite 1, 2, 3 ou 4.')
+        print('Opção inválida. Digite 1, 2 ou 3.')
