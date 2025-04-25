@@ -24,9 +24,13 @@ def buscar_musica():
         if musica == nome_m:
             print("Música encontrada!")
             tocar=str(input("Deseja tocar a música? Digite SIM para tocar e NÃO para não tocar"))
+            curtir=str(input('Deseja curtir a música? Digite SIM para curtir e NÃO para não curtir'))
+            if curtir=="SIM":
+                lista_hist_m_c.append(nome_m)
+            if curtir == "NÃO":
+                lista_hist_m_dc.append(nome_m)
             if tocar == "SIM":
                 print("Tocando...")
-                lista_hist_musicas.append(nome_m)
             if tocar == "NÃO":
                 print("Música não tocada!")        
             return True
@@ -51,7 +55,8 @@ def gerenciar_musica():
 ###############################################################################################################################################################
 lista_usuarios = [['Sophia','S','123'],['Bia','B','123']]
 lista_musicas = ["CINEMA"]
-lista_hist_musicas=[]
+lista_hist_m_c=[]
+lista_hist_m_dc=[]
 
 print('Bem-Vindo(a) ao SPOTIFEI')
 
@@ -89,7 +94,7 @@ while True:
         gerenciar_musica()
         break
     if escolha =="3":
-        print(lista_hist_musicas)
+        print('lista_hist_musicas')
         break  
     else: 
         print('Opção inválida. Digite 1, 2 ou 3.')

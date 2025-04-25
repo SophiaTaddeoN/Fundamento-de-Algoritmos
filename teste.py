@@ -57,6 +57,12 @@ def criar_playlist():
             nova_playlist.append(musicas)
     lista_playlist.append(nova_playlist)
     print(lista_playlist)
+
+#Funções Remover playlist 
+def remover():
+    print()
+
+
 #listas globais
 lista_usuarios=[]
 lista_musicas = ["CINEMA"]
@@ -66,7 +72,7 @@ lista_playlist=[]
 
 
 
-# Primeiro loop - Cadastro/Login
+#Menu Principal
 while True:
     nummenu = input('Digite 1 para se CADASTRAR ou 2 para fazer LOGIN: ')
     
@@ -76,37 +82,49 @@ while True:
         lista_usuarios.append(dados_usuario)  # Adiciona a lista que foi retornada no cadastro em outra lista (listas dentro de listas)
         print("Agora vamos fazer o login!")  # redireciona para o login imediatamente
         if login():
-            escolha = str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST, 3 para VISUALIZAR HISTÓRICO e 4 para SAIR \n"))  
             break
         
     elif nummenu == '2':
         print('Vamos fazer o login!') 
         if login():
-            escolha = str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST, 3 para VISUALIZAR HISTÓRICO  e 4 para SAIR \n"))  
             break  
     
     else:
         print('Opção inválida. Digite 1 ou 2.')
 
 
-
-
 #Menu Secundário
 while True:
+    escolha = input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA 2 para GERENCIAR UMA PLAYLIST 3 para VISUALIZAR HISTÓRICO 4 para SAIR\n")
+    
     if escolha == "1":
         buscar_musica()
     
     elif escolha == "2":
-        edt_playlist=str(input("O que você deseja fazer? Digite 1 para CRIAR uma playlist, 2 para REMOVER uma playlist e 3 para VISUALIZAR uma playlist: "))
-        if edt_playlist=='1':
+        edt_playlist = input("O que você deseja fazer? Digite 1 para CRIAR uma playlist 2 para REMOVER uma playlist 3 para VISUALIZAR uma playlist 4 para VOLTAR\n")
+        
+        if edt_playlist == '1':
             criar_playlist()
+        elif edt_playlist == '2':
+            # Adicione aqui a lógica para REMOVER playlist
+            pass
+        elif edt_playlist == '3':
+            # Adicione aqui a lógica para VISUALIZAR playlist
+            pass
+        elif edt_playlist == '4':
+            continue  # Volta ao menu secundário
+        else:
+            print('Opção inválida. Digite 1, 2, 3 ou 4.')
     
     elif escolha == "3":
-        print(lista_hist_m_c)  # Corrigido para mostrar a lista de músicas curtidas
-        print(lista_hist_m_dc)  # Corrigido para mostrar a lista de músicas não curtidas
-        
+        print("\n--- Músicas Curtidas ---")
+        print(lista_hist_m_c)
+        print("\n--- Músicas Não Curtidas ---")
+        print(lista_hist_m_dc)
+    
     elif escolha == '4':
         print("Deslogando do SPOTIFEI . . . . . . . .")
-
+        break  # Sai do loop e encerra o programa
+    
     else: 
         print('Opção inválida. Digite 1, 2, 3 ou 4.')
