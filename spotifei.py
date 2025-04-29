@@ -59,7 +59,7 @@ def buscar_musica():
     print("Música não encontrada!")
     time.sleep(2)
     limpar_tela()
-    return False
+    
 
 # Função Criar Playlist 
 def criar_playlist():
@@ -120,7 +120,7 @@ def remover_playlist():
 
 # Listas globais
 lista_usuarios = []
-lista_musicas = ["CINEMA - STRAY KIDS", "What is love?", "Dynamite - BTS", "Blinding Lights - The Weeknd"]
+lista_musicas = [["CINEMA"], "What is love?", "Dynamite - BTS", "Blinding Lights - The Weeknd"]
 lista_hist_m_c = []
 lista_hist_m_dc = []
 lista_playlist = []
