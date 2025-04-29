@@ -65,7 +65,7 @@ def remover():
 
 #listas globais
 lista_usuarios=[]
-lista_musicas = ["CINEMA"]
+lista_musicas = [["CINEMA","STRAY KIDS"],["What is love?",]]
 lista_hist_m_c = []
 lista_hist_m_dc = []
 lista_playlist=[]

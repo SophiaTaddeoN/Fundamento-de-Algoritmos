@@ -1,100 +1,198 @@
+import time
+import os  # Importa o módulo para limpar a tela
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')  # Limpa a tela
+
 # Função Cadastro
-def cadastro(): # Pede o nome, user e senha do usuario
+def cadastro():
+    limpar_tela()
     nome = input('Digite o seu nome: \n')
     user = input('Digite o seu user: \n')
     senha = input('Digite sua senha: \n')
-    return [nome, user, senha]  #guarda em variáveis e depois os retorna em 1 lista
+    time.sleep(1)  # Pequeno delay antes de retornar
+    return [nome, user, senha]
 
-#Função Login
-def login(): # pede o user e a senha do usuario
-    l_user=input('Digite o seu user: \n')
-    l_senha=input('Digite sua senha: \n')
+# Função Login
+def login():
+    limpar_tela()
+    l_user = input('Digite o seu user: \n')
+    l_senha = input('Digite sua senha: \n')
     for usuario in lista_usuarios:
-       if (l_user == usuario[1]) and (l_senha == usuario[2]): #Verifica se o user e a senha digitados estão na lista de usuários
-        print("Login realizado com sucesso!")
-        return True
-       
+        if (l_user == usuario[1]) and (l_senha == usuario[2]):
+            print("Login realizado com sucesso!")
+            time.sleep(2)
+            limpar_tela()
+            return True
+    
     print("Login Incorreto")
+    time.sleep(2)
+    limpar_tela()
     return False
 
-#Função Buscar música
+# Função Buscar música
 def buscar_musica():
-    nome_m=str(input('Digite o nome e da música que deseja buscar: \n'))
+    limpar_tela()
+    nome_m = str(input('Digite o nome da música que deseja buscar: \n'))
     for musica in lista_musicas:
         if musica == nome_m:
             print("Música encontrada!")
-            tocar=str(input("Deseja tocar a música? Digite SIM para tocar e NÃO para não tocar"))
-            curtir=str(input('Deseja curtir a música? Digite SIM para curtir e NÃO para não curtir'))
-            if curtir=="SIM":
+            time.sleep(2)
+            tocar = str(input("Deseja tocar a música? Digite SIM para tocar e NÃO para não tocar: "))
+            curtir = str(input('Deseja curtir a música? Digite SIM para curtir e NÃO para não curtir: '))
+            
+            if curtir == "SIM":
                 lista_hist_m_c.append(nome_m)
-            if curtir == "NÃO":
+            elif curtir == "NÃO":
                 lista_hist_m_dc.append(nome_m)
+            
             if tocar == "SIM":
                 print("Tocando...")
-            if tocar == "NÃO":
-                print("Música não tocada!")        
+                time.sleep(3)
+            elif tocar == "NÃO":
+                print("Música não tocada!")
+                time.sleep(2)
+            
+            limpar_tela()
             return True
-       
+    
     print("Música não encontrada!")
+    time.sleep(2)
+    limpar_tela()
     return False
 
-#Função Gerenciar playlist
-def gerenciar_musica():
- 
-    oq_da_playlist=str(input("O que você deseja fazer? Digite 1 para ADICIONAR uma música a playlist, 2 para REMOVER uma música da playlist e 3 para VISUALIZAR a playlist: "))
-    if oq_da_playlist == "1":
-        nova_m=str(input("Digite o nome da música á ser adionada: "))
-        lista_musicas.append(nova_m)
-    elif oq_da_playlist == "2":
-        del_m=str(input('Digite o nome da música á ser removida: '))
-        lista_musicas.remove(del_m)
-    elif oq_da_playlist =="3":
-            print(lista_musicas)
+# Função Criar Playlist 
+def criar_playlist():
+    limpar_tela()
+    nova_playlist = []
+    nome_playlist = str(input('Digite o nome que você quer dar à playlist: '))
+    nova_playlist.append(nome_playlist)
 
+    print("\nDigite o nome das músicas que deseja adicionar (pressione ENTER para finalizar):")
+    while True:
+        musica = input('Música: ')
+        if musica == "":
+            break
+        nova_playlist.append(musica)
+    
+    lista_playlist.append(nova_playlist)
+    print("\nPlaylist criada com sucesso!")
+    time.sleep(2)
+    limpar_tela()
 
-###############################################################################################################################################################
-lista_usuarios = [['Sophia','S','123'],['Bia','B','123']]
-lista_musicas = ["CINEMA"]
-lista_hist_m_c=[]
-lista_hist_m_dc=[]
+# Função Visualizar Playlists
+def visualizar_playlists():
+    limpar_tela()
+    if not lista_playlist:
+        print("Nenhuma playlist criada ainda.")
+    else:
+        print("\n--- SUAS PLAYLISTS ---")
+        for playlist in lista_playlist:
+            print(f"\nNome: {playlist[0]}")
+            print("Músicas:", ", ".join(playlist[1:]))
+    input("\nPressione ENTER para continuar...")
+    limpar_tela()
 
-print('Bem-Vindo(a) ao SPOTIFEI')
+# Função Remover Playlist
+def remover_playlist():
+    limpar_tela()
+    if not lista_playlist:
+        print("Nenhuma playlist para remover.")
+        time.sleep(2)
+        return
+    
+    print("\n--- PLAYLISTS DISPONÍVEIS ---")
+    for i, playlist in enumerate(lista_playlist, 1):
+        print(f"{i}. {playlist[0]}")
+    
+    try:
+        escolha = int(input("\nDigite o número da playlist que deseja remover: ")) - 1
+        if 0 <= escolha < len(lista_playlist):
+            removida = lista_playlist.pop(escolha)
+            print(f"Playlist '{removida[0]}' removida!")
+        else:
+            print("Número inválido.")
+    except ValueError:
+        print("Digite um número válido.")
+    
+    time.sleep(2)
+    limpar_tela()
 
+# Listas globais
+lista_usuarios = []
+lista_musicas = ["CINEMA - STRAY KIDS", "What is love?", "Dynamite - BTS", "Blinding Lights - The Weeknd"]
+lista_hist_m_c = []
+lista_hist_m_dc = []
+lista_playlist = []
+
+# Menu Principal
 while True:
-    nummenu = input('Digite 1 para se CADASTRAR ou 2 para fazer LOGIN: ')
+    limpar_tela()
+    print("\n=== SPOTIFEI ===")
+    nummenu = input('\nDigite 1 para se CADASTRAR ou 2 para fazer LOGIN: ')
     
     if nummenu == '1':
-        print("Vamos realizar seu cadastro!")
+        print("\nVamos realizar seu cadastro!")
         dados_usuario = cadastro()
-        lista_usuarios.append(dados_usuario) #Adiciona a lista que foi retornada no cadastro em outra lista (listas dentro de listas )
-        print("Agora vamos fazer o login!") #redireciona para o login imediatamente 
+        lista_usuarios.append(dados_usuario)
+        print("\nCadastro concluído! Redirecionando para login...")
+        time.sleep(2)
         if login():
-            escolha=str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST e 3 para VISUALIZAR HISTÓRICO \n"))  
             break
         
-        
     elif nummenu == '2':
-        print('Vamos fazer o login!') 
         if login():
-            escolha=str(input("O que você quer fazer agora? Digite 1 para BUSCAR UMA MÚSICA, 2 para GERENCIAR UMA PLAYLIST e 3 para VISUALIZAR HISTÓRICO \n"))  
             break  
-        
+    
     else:
-        print('Opção inválida. Digite 1 ou 2.')
+        print('\nOpção inválida. Digite 1 ou 2.')
+        time.sleep(2)
 
-
-
-
+# Menu Secundário
 while True:
+    limpar_tela()
+    print("\n=== MENU PRINCIPAL ===")
+    escolha = input("\nO que você quer fazer agora?\n1. BUSCAR UMA MÚSICA\n2. GERENCIAR PLAYLIST\n3. VISUALIZAR HISTÓRICO\n4. SAIR\n\nEscolha uma opção: ")
+    
     if escolha == "1":
         buscar_musica()
+    
+    elif escolha == "2":
+        while True:
+            limpar_tela()
+            print("\n=== GERENCIAR PLAYLIST ===")
+            edt_playlist = input("\n1. CRIAR playlist\n2. REMOVER playlist\n3. VISUALIZAR playlists\n4. VOLTAR\n\nEscolha uma opção: ")
+            
+            if edt_playlist == '1':
+                criar_playlist()
+            elif edt_playlist == '2':
+                remover_playlist()
+            elif edt_playlist == '3':
+                visualizar_playlists()
+            elif edt_playlist == '4':
+                break
+            else:
+                print('\nOpção inválida. Digite 1, 2, 3 ou 4.')
+                time.sleep(2)
+    
+    elif escolha == "3":
+        limpar_tela()
+        print("\n--- HISTÓRICO ---")
+        print("\nMúsicas Curtidas:")
+        for musica in lista_hist_m_c:
+            print(f"- {musica}")
+        
+        print("\nMúsicas Não Curtidas:")
+        for musica in lista_hist_m_dc:
+            print(f"- {musica}")
+        
+        input("\nPressione ENTER para continuar...")
+    
+    elif escolha == '4':
+        print("\nDeslogando do SPOTIFEI...")
+        time.sleep(2)
         break
-
-    if escolha =="2":
-        gerenciar_musica()
-        break
-    if escolha =="3":
-        print('lista_hist_musicas')
-        break  
+    
     else: 
-        print('Opção inválida. Digite 1, 2 ou 3.')
+        print('\nOpção inválida. Digite 1, 2, 3 ou 4.')
+        time.sleep(2)
