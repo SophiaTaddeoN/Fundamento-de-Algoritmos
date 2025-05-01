@@ -33,77 +33,109 @@ def login():
 # Função Buscar música
 def buscar_musica():
     limpar_tela()
-    nome_m = str(input('Digite o nome da música que deseja buscar: \n'))
-    for musica in lista_musicas:
-        if musica == nome_m:
-            print("Música encontrada!")
-            time.sleep(2)
-            tocar = str(input("Deseja tocar a música? Digite SIM para tocar e NÃO para não tocar: "))
-            curtir = str(input('Deseja curtir a música? Digite SIM para curtir e NÃO para não curtir: '))
-            
-            if curtir == "SIM":
-                lista_hist_m_c.append(nome_m)
-            elif curtir == "NÃO":
-                lista_hist_m_dc.append(nome_m)
-            
-            if tocar == "SIM":
-                print("Tocando...")
-                time.sleep(3)
-            elif tocar == "NÃO":
-                print("Música não tocada!")
-                time.sleep(2)
-            
-            limpar_tela()
-            return True
+    nome_busca = input('Digite o nome da música: ').strip().lower()
     
-    print("Música não encontrada!")
+    for musica in lista_musicas:
+    
+        if musica["nome"].lower() == nome_busca:   #independente se tiver minúsculo ou maiúsculo
+            print("\nMúsica encontrada!")
+            print(f"{musica['nome']} - {musica['artista']} ({musica['duracao']})")
+            
+            # Pergunta se quer tocar
+            if input("\nTocar? (S/N) ").upper() == 'S':
+                print(f"\n▶ {musica['nome']} ――――――•――――― {musica['duracao']}")
+                time.sleep(3)
+            
+            # Pergunta se quer curtir
+            if input("\nCurtir? (S/N) ").upper() == 'S':
+                print("✓ Música curtida!")
+                lista_hist_m_c.append(musica['nome'])
+            else:
+                lista_hist_m_dc.append(musica['nome'])
+            
+            time.sleep(2)
+            limpar_tela()
+            return
+    
+    print("\nMúsica não encontrada!")
     time.sleep(2)
     limpar_tela()
     
 
-# Função Criar Playlist 
 def criar_playlist():
     limpar_tela()
-    nova_playlist = []
-    nome_playlist = str(input('Digite o nome que você quer dar à playlist: '))
-    nova_playlist.append(nome_playlist)
-
-    print("\nDigite o nome das músicas que deseja adicionar (pressione ENTER para finalizar):")
-    while True:
-        musica = input('Música: ')
-        if musica == "":
-            break
-        nova_playlist.append(musica)
     
+    # 1. Pede o nome da playlist primeiro
+    nome_playlist = input('Digite o nome da playlist: ').strip()
+    
+    # 2. Cria a estrutura da playlist (dicionário)
+    nova_playlist = {
+        "nome": nome_playlist,
+        "musicas": []  # Lista de músicas vazia
+    }
+    
+    # 3. Loop para adicionar músicas
+    print("\nAdicione músicas (nome, artista e duração). Pressione ENTER para finalizar:")
+    time.sleep(2)
+    
+    while True:
+        # Pede o nome da música (se for vazio, sai do loop)
+        nome_musica = input('\nNome da música (ou ENTER para terminar): ').strip()
+        if nome_musica == "":
+            break
+        
+        # Pede artista e duração **DENTRO DO LOOP** (para cada música)
+        artista = input("➡︎ Artista: ").strip()
+        duracao = input("➡︎ Duração (ex: 3:41): ").strip()
+        
+        # Adiciona a música à playlist
+        nova_playlist["musicas"].append({
+            "nome": nome_musica,
+            "artista": artista,
+            "duracao": duracao
+        })
+    
+    # 4. Salva a playlist na lista global
     lista_playlist.append(nova_playlist)
-    print("\nPlaylist criada com sucesso!")
+    
+    # 5. Mensagem de sucesso
+    print("\nPlaylist '{}' criada com {} músicas!".format(
+        nome_playlist,
+        len(nova_playlist["musicas"])
+    ))
     time.sleep(2)
     limpar_tela()
-
 # Função Visualizar Playlists
 def visualizar_playlists():
     limpar_tela()
-    if not lista_playlist:
+    if lista_playlist== {}:
         print("Nenhuma playlist criada ainda.")
     else:
         print("\n--- SUAS PLAYLISTS ---")
         for playlist in lista_playlist:
-            print(f"\nNome: {playlist[0]}")
-            print("Músicas:", ", ".join(playlist[1:]))
+            print(f"\nNome: {playlist['nome']}")
+            print("Músicas:")
+            for musica in playlist['musicas']:
+                print(f"  - {musica['nome']} ({musica['artista']}) | {musica['duracao']}")
+    
     input("\nPressione ENTER para continuar...")
     limpar_tela()
 
 # Função Remover Playlist
 def remover_playlist():
     limpar_tela()
-    if not lista_playlist:
+    if lista_playlist == {}:
         print("Nenhuma playlist para remover.")
         time.sleep(2)
         return
     
     print("\n--- PLAYLISTS DISPONÍVEIS ---")
-    for i, playlist in enumerate(lista_playlist, 1):
-        print(f"{i}. {playlist[0]}")
+    print("\n--- SUAS PLAYLISTS ---")
+    for playlist in lista_playlist:
+        print(f"\nNome: {playlist['nome']}")
+        print("Músicas:")
+        for musica in playlist['musicas']:
+            print(f"  - {musica['nome']} ({musica['artista']}) | {musica['duracao']}")
     
     try:
         escolha = int(input("\nDigite o número da playlist que deseja remover: ")) - 1
@@ -120,7 +152,12 @@ def remover_playlist():
 
 # Listas globais
 lista_usuarios = []
-lista_musicas = [["CINEMA"], "What is love?", "Dynamite - BTS", "Blinding Lights - The Weeknd"]
+lista_musicas = [
+    {"nome": "CINEMA", "artista": "Stray Kids", "duracao": "3:41"},
+    {"nome": "What is love?", "artista": "Twice", "duracao": "3:28"},
+    {"nome": "Dynamite", "artista": "BTS", "duracao": "3:19"},
+    {"nome": "Blinding Lights", "artista": "The Weeknd", "duracao": "3:20"}
+]
 lista_hist_m_c = []
 lista_hist_m_dc = []
 lista_playlist = []
