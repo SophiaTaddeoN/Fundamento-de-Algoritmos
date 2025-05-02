@@ -138,7 +138,7 @@ def remover_playlist():
             print(f"  - {musica['nome']} ({musica['artista']}) | {musica['duracao']}")
     
     try:
-        escolha = int(input("\nDigite o número da playlist que deseja remover: ")) - 1
+        escolha = int(input("\nDigite o nome da playlist que deseja remover: ")) - 1
         if 0 <= escolha < len(lista_playlist):
             removida = lista_playlist.pop(escolha)
             print(f"Playlist '{removida[0]}' removida!")
