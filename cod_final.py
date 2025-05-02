@@ -37,13 +37,13 @@ def login():
 #Buscar Música
 def buscar_musica():
     limpar_tela()
-    nome_m=str(input("Digite o nome da música"))  
-   for musica in dados["musicas"]:
+    termo=str(input("Digite o nome da música"))  
+    for musica in dados["musicas"]:
         if termo in musica["nome"].lower():
-            print(f"\n{musica['nome']} - {musica['artista']} ({musica['duracao']})")
+            print("\n {} - {} ({})".format(musica['nome'],musica['artista'],musica['duracao']))
             
             if input("\nTocar? (S/N) ").upper() == 'S':
-                print(f"\n▶ {musica['nome']} ――――――•――――― {musica['duracao']}")
+                print("\n▶ {} ――――――•――――― {}".format(musica['nome'],musica['duracao']))
                 time.sleep(3)
             
             acao = input("\nCurtir? (S/N) ").upper()
@@ -58,6 +58,70 @@ def buscar_musica():
     print("\nMúsica não encontrada!")
     time.sleep(2)
 
+
+#Gerenciar playlist
+def gerenciar_playlist():
+    print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
+    opcao = int(input("\nEscolha uma opção: "))
+    if opcao == 1:
+        limpar_tela()
+        print("------- CRIAR PLAYLISTS -------")  
+        while True:
+            nome_p= str(input("Digite o nome da Playlist: "))
+            if nome_p == "":
+                break
+            print("Nome inválido! Tente novamente")
+        print("------- MÚSICAS -------") 
+        for musica in dados["musicas"]:
+            print("Id {}: {} -- {} ({})".format({musica["id"]},{musica["nome"]},{musica["artista"]},{musica["duracao"]})) 
+
+        musicas_novas=[]
+        while True:
+            musicas=[]
+            id_escolhido=int(input("Digite o ID da música que deseja adicionar! Quando acabar pressione ENTER: \n"))
+            if id_escolhido != int:
+                print("Digite apenas números! Tente novamente")
+            for m in dados['musicas']:
+                if str(m['id']) == id_escolhido:
+                    musicas.append(m['id'])
+                print(f"Adicionado: {m['nome']}")
+                break
+            else:
+              print("ID não encontrado!")
+
+            if musicas:
+                dados['playlists'].append({'nome': nome_p,
+            'musicas': musicas
+        })
+                print(f"\n✅ Playlist criada: {nome_p}")
+    else:
+        print("\n❌ Nenhuma música adicionada")
+    
+    input("\nPressione Enter para continuar...")
+
+            
+
+
+
+#Menu Playlist 
+def menu_playlists():
+    while True:
+     escolha_mp=int(input("Digite 1 PARA BUSCAR MÚSICAS," \
+    " 2 PARA GERENCIAR PLAYLISTS, " \
+    "3 PARA VISUALIZAR O HISTÓRICO E" \
+    " 4 PARA SAIR"))
+     if escolha_mp == 1:
+        buscar_musica()
+     elif escolha_mp == 2:
+        gerenciar_playlist()
+     elif escolha_mp == 3:
+        visualizar_hist()
+     elif escolha_mp == 4:
+        return False
+     elif escolha_mp != 1 or escolha_mp != 2 or escolha_mp != 3 or escolha_mp != 4:
+         print("Digite um número válido!")
+
+
 #DICIONÁRIO 
 dados = {
     "usuarios": [],
@@ -67,7 +131,8 @@ dados = {
         {"nome": "Dynamite", "artista": "BTS", "duracao": "3:19", "id": 3},
         {"nome": "Blinding Lights", "artista": "The Weeknd", "duracao": "3:20", "id": 4}
     ],
-    "playlists": [],
+    "playlists": [
+    ],
     "historico": {
         "curtidas": [],
         "nao_curtidas": []
