@@ -10,10 +10,11 @@ def limpar_tela():
 
 #Cadastro
 def cadastro():  # Pede o nome, user e senha do usuario
-    nome = input('Digite o seu nome: \n')
-    user = input('Digite o seu user: \n')
-    senha = input('Digite sua senha: \n')
-    return {"nome_u":nome, "user":user, "senha":senha}
+    while True:
+        nome = input('Digite o seu nome: \n')
+        user = input('Digite o seu user: \n')
+        senha = input('Digite sua senha: \n')
+        return {"nome_u":nome, "user":user, "senha":senha}
 
 
 #Login
@@ -37,25 +38,31 @@ def login():
 #Buscar Música
 def buscar_musica():
     limpar_tela()
-    termo=str(input("Digite o nome da música"))  
+    termo=str(input("Digite o nome da música: "))  
     for musica in dados["musicas"]:
-        if termo in musica["nome"].lower():
+        if termo in musica["nome"]:
             print("\n {} - {} ({})".format(musica['nome'],musica['artista'],musica['duracao']))
             
             if input("\nTocar? (S/N) ").upper() == 'S':
                 print("\n▶ {} ――――――•――――― {}".format(musica['nome'],musica['duracao']))
                 time.sleep(3)
             
-            acao = input("\nCurtir? (S/N) ").upper()
-            if acao == 'S':
-                dados["historico"]["curtidas"].append(musica["id"])
-            else:
-                dados["historico"]["nao_curtidas"].append(musica["id"])
-            
+            while True:
+                acao = input("\nCurtir? (S/N) ").strip().upper()
+                if acao == 'S':
+                    dados["historico"]["curtidas"].append(musica["id"])
+                    print("Música curtida com sucesso!")
+                    break
+                elif acao == 'N':
+                    dados["historico"]["nao_curtidas"].append(musica["id"])
+                    print("Música não curtida!")
+                    break
+                else:
+                    print("Digite apenas S ou N!")
             time.sleep(1)
             return
     
-    print("\nMúsica não encontrada!")
+        print("\nMúsica não encontrada!")
     time.sleep(2)
 
 
@@ -66,40 +73,14 @@ def gerenciar_playlist():
     if opcao == 1:
         limpar_tela()
         print("------- CRIAR PLAYLISTS -------")  
-        while True:
-            nome_p= str(input("Digite o nome da Playlist: "))
-            if nome_p == "":
-                break
-            print("Nome inválido! Tente novamente")
-        print("------- MÚSICAS -------") 
-        for musica in dados["musicas"]:
-            print("Id {}: {} -- {} ({})".format({musica["id"]},{musica["nome"]},{musica["artista"]},{musica["duracao"]})) 
+        nome_p = input("Digite o nome da playlist: ")
 
-        musicas_novas=[]
-        while True:
-            musicas=[]
-            id_escolhido=int(input("Digite o ID da música que deseja adicionar! Quando acabar pressione ENTER: \n"))
-            if id_escolhido != int:
-                print("Digite apenas números! Tente novamente")
-            for m in dados['musicas']:
-                if str(m['id']) == id_escolhido:
-                    musicas.append(m['id'])
-                print(f"Adicionado: {m['nome']}")
-                break
-            else:
-              print("ID não encontrado!")
 
-            if musicas:
-                dados['playlists'].append({'nome': nome_p,
-            'musicas': musicas
-        })
-                print(f"\n✅ Playlist criada: {nome_p}")
-    else:
-        print("\n❌ Nenhuma música adicionada")
-    
-    input("\nPressione Enter para continuar...")
+#Visualizar Histórico
+def visualizar_hist():
+    print(dados["historico"])   
 
-            
+
 
 
 
@@ -164,18 +145,20 @@ while True:
 #MENU PRINCIPAL 
 
 while True:
-        limpar_tela()
         print("\n=== MENU PRINCIPAL ===")
-        opcao = input("\n1. Buscar música\n2. Gerenciar playlists\n3. Histórico\n4. Sair\n\nOpção: ")
+        opcao = int(input("\n1. Buscar música\n2. Gerenciar playlists\n3. Histórico\n4. Sair\n\nOpção: "))
         
-        if opcao == "1":
+        if opcao == 1:
             buscar_musica()
-        elif opcao == "2":
+        elif opcao == 2:
             menu_playlists()
-        elif opcao == "3":
-            visualizar_historico()
-        elif opcao == "4":
+        elif opcao == 3:
+            visualizar_hist()
+        elif opcao == 4:
+            print("=== SAINDO DO SPOTIFEI ===")
+            time.sleep(3)
+
             break
         else:
             print("Opção inválida!")
-            time.sleep(1)
+            time.sleep(5)
