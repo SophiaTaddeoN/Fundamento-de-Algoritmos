@@ -62,14 +62,14 @@ def buscar_musica():
             time.sleep(1)
             return
     
-        print("\nMúsica não encontrada!")
+    print("\nMúsica não encontrada!")
     time.sleep(2)
 
 
 #Gerenciar playlist
 def gerenciar_playlist():
     print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
-    opcao = int(input("\nEscolha uma opção: "))
+    opcao = input("\nEscolha uma opção: ")
     if opcao == 1:
         limpar_tela()
         print("------- CRIAR PLAYLISTS -------")  
@@ -78,7 +78,7 @@ def gerenciar_playlist():
 
 #Visualizar Histórico
 def visualizar_hist():
-    print(dados["historico"])   
+     print("\n===== HISTÓRICO =====")  
 
 
 
@@ -87,17 +87,22 @@ def visualizar_hist():
 #Menu Playlist 
 def menu_playlists():
     while True:
-     escolha_mp=int(input("Digite 1 PARA BUSCAR MÚSICAS," \
-    " 2 PARA GERENCIAR PLAYLISTS, " \
-    "3 PARA VISUALIZAR O HISTÓRICO E" \
-    " 4 PARA SAIR"))
-     if escolha_mp == 1:
+     escolha_mp = input(
+    "Digite uma opção:\n"
+    "1. Buscar músicas\n"
+    "2. Gerenciar playlists\n"
+    "3. Visualizar o histórico\n"
+    "4. Sair\n\nOpção: "
+)
+
+     if escolha_mp == "1":
         buscar_musica()
-     elif escolha_mp == 2:
+     elif escolha_mp == "2":
         gerenciar_playlist()
-     elif escolha_mp == 3:
+     elif escolha_mp == "3":
         visualizar_hist()
-     elif escolha_mp == 4:
+     elif escolha_mp == "4":
+        print("=== SAINDO DO SPOTIFEI ===")
         return False
      elif escolha_mp != 1 or escolha_mp != 2 or escolha_mp != 3 or escolha_mp != 4:
          print("Digite um número válido!")
@@ -122,7 +127,7 @@ dados = {
 
 #MENU INICIAL
 while True:
-    nummenu = input('Digite 1 para se CADASTRAR, 2 para fazer LOGIN e 3 para SAIR: ')
+    nummenu = input('Digite:\n1. Para se CADASTRAR\n2. Para fazer LOGIN\n \nOpção: ')
     
     if nummenu == '1':
         print("Vamos realizar seu cadastro!")
@@ -136,29 +141,7 @@ while True:
         print('Vamos fazer o login!') 
         if login():
             break  
-    elif nummenu=="3":
-        break
     else:
         print('Opção inválida. Digite 1 ou 2.')
 
-
-#MENU PRINCIPAL 
-
-while True:
-        print("\n=== MENU PRINCIPAL ===")
-        opcao = int(input("\n1. Buscar música\n2. Gerenciar playlists\n3. Histórico\n4. Sair\n\nOpção: "))
-        
-        if opcao == 1:
-            buscar_musica()
-        elif opcao == 2:
-            menu_playlists()
-        elif opcao == 3:
-            visualizar_hist()
-        elif opcao == 4:
-            print("=== SAINDO DO SPOTIFEI ===")
-            time.sleep(3)
-
-            break
-        else:
-            print("Opção inválida!")
-            time.sleep(5)
+menu_playlists()
