@@ -31,8 +31,8 @@ def cadastro():
             time.sleep(3)
             limpar_tela()
             print("===== CADASTRO DE USUÁRIO =====\n")
-            print(f"Nome: {nome}")
-            print(f"User: {user}")
+            print("Nome: {}".format(nome))
+            print("User: {}".format(user))
         else:
             break  # Senha válida, sai do loop
 
@@ -124,7 +124,13 @@ def gerenciar_playlist():
 #Visualizar Histórico
 def visualizar_hist():
      print("\n===== HISTÓRICO =====")  
-     print(dados["historico"])
+     print("MÚSICAS CURTIDAS:")
+     curtidas=dados["historico"]["curtidas"]
+     for musica_id in curtidas:
+        for musica in dados["musicas"]:
+            if musica["id"] == musica_id:
+                 print(musica["nome"], "-", musica["artista"], "(", musica["duracao"], ")")
+
      input("\nPressione ENTER para continuar...")
      limpar_tela()
 
