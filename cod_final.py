@@ -9,12 +9,40 @@ def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 #Cadastro
-def cadastro():  # Pede o nome, user e senha do usuario
+def cadastro():
     while True:
-        nome = input('Digite o seu nome: \n')
-        user = input('Digite o seu user: \n')
-        senha = input('Digite sua senha: \n')
-        return {"nome_u":nome, "user":user, "senha":senha}
+        limpar_tela()
+        print("===== CADASTRO DE USUÁRIO =====\n")
+
+        nome = input('Digite o seu nome: ')
+        user = input('Digite o seu user: ')
+
+        if nome == user:
+            print("\nO nome e o usuário não podem ser iguais!")
+            time.sleep(3)
+            limpar_tela()
+        else:
+            break  # Nome e user válidos, sai do loop
+
+    while True:
+        senha = input('\nDigite sua senha (mínimo 6 caracteres): ')
+        if len(senha) < 6:
+            print("\nA senha deve ter no mínimo 6 caracteres!")
+            time.sleep(3)
+            limpar_tela()
+            print("===== CADASTRO DE USUÁRIO =====\n")
+            print(f"Nome: {nome}")
+            print(f"User: {user}")
+        else:
+            break  # Senha válida, sai do loop
+
+    print("\nCadastro realizado com sucesso!")
+    time.sleep(2)
+
+    return {"nome_u": nome, "user": user, "senha": senha}
+
+
+
 
 
 #Login
@@ -29,6 +57,7 @@ def login():
         if usuario["user"] == user and usuario["senha"] == senha:
             print("Login realizado com sucesso!")
             time.sleep(2)
+            limpar_tela()
             return True
     
     print("Login Incorreto")
@@ -50,15 +79,31 @@ def buscar_musica():
             while True:
                 acao = input("\nCurtir? (S/N) ").strip().upper()
                 if acao == 'S':
-                    dados["historico"]["curtidas"].append(musica["id"])
+                    dados["historico"]["curtidas"].append({
+                    "nome": musica["nome"],
+                    "artista": musica["artista"],
+                    "duracao": musica["duracao"],
+                    "id": musica["id"]})
+
+
                     print("Música curtida com sucesso!")
+                    input("\nPressione ENTER para continuar...")
+                    limpar_tela()
                     break
                 elif acao == 'N':
-                    dados["historico"]["nao_curtidas"].append(musica["id"])
+                    dados["historico"]["curtidas"].append({
+                    "nome": musica["nome"],
+                    "artista": musica["artista"],
+                    "duracao": musica["duracao"],
+                    "id": musica["id"]})
+
                     print("Música não curtida!")
+                    input("\nPressione ENTER para continuar...")
+                    limpar_tela()
                     break
                 else:
                     print("Digite apenas S ou N!")
+
             time.sleep(1)
             return
     
@@ -79,6 +124,9 @@ def gerenciar_playlist():
 #Visualizar Histórico
 def visualizar_hist():
      print("\n===== HISTÓRICO =====")  
+     print(dados["historico"])
+     input("\nPressione ENTER para continuar...")
+     limpar_tela()
 
 
 
@@ -87,6 +135,7 @@ def visualizar_hist():
 #Menu Playlist 
 def menu_playlists():
     while True:
+     print("=== BEM VINDO AO SPOTIFEI ===")
      escolha_mp = input(
     "Digite uma opção:\n"
     "1. Buscar músicas\n"
