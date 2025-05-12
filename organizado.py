@@ -129,8 +129,7 @@ def visualizar_hist():
     print("=== MÚSICAS CURTIDAS ===")
     if curtidas:
         for musica in curtidas:
-            
-    input("\nPressione ENTER para continuar...")
+            input("\nPressione ENTER para continuar...")
     limpar_tela()
 
 #Menu Playlist 

@@ -62,12 +62,14 @@ def login():
 # Buscar música
 def buscar_musica():
     limpar_tela()
-    termo = input("Digite o nome da música: ")
+    termo = input("Digite o nome da música: ").upper()
 
     for musica in dados["musicas"]:
         if termo in musica["nome"]:
             print("Música encontrada!")
             print("\n{} - {} ({})".format(musica['nome'], musica['artista'], musica['duracao']))
+            dados["historico"]["busca"].append(musica)
+
             
             tocar = input("\nTocar? (S/N): ").upper()
             if tocar == 'S':
@@ -90,11 +92,101 @@ def buscar_musica():
         print("\nMúsica não encontrada!")
         time.sleep(2)
 
+
+#Criar Playlist
+def criar_playlist():
+    limpar_tela()
+    print("=== CRIAR PLAYLIST ===")
+    nome = input("Nome da playlist: ")
+    playlist = []
+
+    while True:
+        nome_musica = input("Digite o nome da música (ou ENTER para sair): ").upper()
+        if nome_musica == "":
+            break
+        for musica in dados["musicas"]:
+            if musica["nome"] == nome_musica:
+                playlist.append(musica)
+                print("Música adicionada!")
+                break
+        else:
+            print("Música não encontrada.")
+
+    dados["playlists"].append({"nome": nome, "musicas": playlist})
+    print("Playlist criada com sucesso!")
+
+
+#Editar Playlist
+def editar_playlist():
+    limpar_tela()
+    print("=== EDITAR PLAYLIST ===")
+
+    if not dados["playlists"]:
+        print("Nenhuma playlist criada ainda.")
+        time.sleep(2)
+        return
+
+    print("Playlists disponíveis:")
+    for idx in range(len(dados["playlists"])):
+        print("{} - {}".format(idx + 1, dados["playlists"][idx]["nome"]))
+
+    escolha = input("\nEscolha o número da playlist para editar ou ENTER para cancelar: ")
+    if escolha == "":
+        return
+
+    pos = int(escolha) - 1
+    if pos >= 0 and pos < len(dados["playlists"]):
+        playlist = dados["playlists"][pos]
+        print("\nEditando a playlist '{}'".format(playlist["nome"]))
+        print("1. Adicionar música")
+        print("2. Remover música")
+        print("3. Voltar")
+
+        acao = input("\nOpção: ")
+
+        if acao == "1":
+            nome_musica = input("Nome da música a adicionar: ").upper()
+            for musica in dados["musicas"]:
+                if nome_musica == musica["nome"]:
+                    playlist["musicas"].append(musica)
+                    print("Música adicionada!")
+                    break
+            else:
+                print("Música não encontrada.")
+
+        elif acao == "2":
+            for i in range(len(playlist["musicas"])):
+                print("{} - {}".format(i + 1, playlist["musicas"][i]["nome"]))
+            rem = input("Digite o número da música para remover: ")
+            if rem.isdigit():
+                idx_rem = int(rem) - 1
+                if idx_rem >= 0 and idx_rem < len(playlist["musicas"]):
+                    removida = playlist["musicas"].pop(idx_rem)
+                    print("Música '{}' removida.".format(removida["nome"]))
+    else:
+        print("Playlist inválida.")
+
+    time.sleep(2)
+    limpar_tela()
+
+
+
 # Gerenciar playlists (em desenvolvimento)
 def gerenciar_playlist():
     print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
-    input("\nFunção ainda em construção. Pressione ENTER para voltar...")
-    limpar_tela()
+    oq_fazer = input("\nOpção: ")
+
+    if oq_fazer == '1':
+        criar_playlist()
+    if oq_fazer == '2':
+        editar_playlist()
+    if oq_fazer == '3':
+        print('alala')
+    if oq_fazer == '4':
+        print('lalala')
+    
+        
+    # limpar_tela()
 
 # Visualizar histórico
 def visualizar_hist():
@@ -139,21 +231,70 @@ def menu_playlists():
             time.sleep(2)
             limpar_tela()
 
-# Dados iniciais
+# DICIONÁRIO
 dados = {
     "usuarios": [],
     "musicas": [
         {"nome": "CINEMA", "artista": "Stray Kids", "duracao": "3:41", "id": 1},
-        {"nome": "What is love?", "artista": "Twice", "duracao": "3:28", "id": 2},
-        {"nome": "Dynamite", "artista": "BTS", "duracao": "3:19", "id": 3},
-        {"nome": "Blinding Lights", "artista": "The Weeknd", "duracao": "3:20", "id": 4}
+        {"nome": "WHAT IS LOVE?", "artista": "Twice", "duracao": "3:28", "id": 2},
+        {"nome": "DYNAMITE", "artista": "BTS", "duracao": "3:19", "id": 3},
+        {"nome": "BLINDING LIGHTS", "artista": "The Weeknd", "duracao": "3:20", "id": 4},
+        {"nome": "BAD BOY", "artista": "Red Velvet", "duracao": "3:30", "id": 5},
+        {"nome": "LOCO", "artista": "ITZY", "duracao": "3:25", "id": 6},
+        {"nome": "FANCY", "artista": "Twice", "duracao": "3:45", "id": 7},
+        {"nome": "BUTTER", "artista": "BTS", "duracao": "2:45", "id": 8},
+        {"nome": "KILL THIS LOVE", "artista": "BLACKPINK", "duracao": "3:14", "id": 9},
+        {"nome": "LEVITATING", "artista": "Dua Lipa", "duracao": "3:23", "id": 10},
+        {"nome": "PEACHES", "artista": "Justin Bieber", "duracao": "3:18", "id": 11},
+        {"nome": "BLINDING LIGHTS", "artista": "The Weeknd", "duracao": "3:20", "id": 12},
+        {"nome": "SAVE YOUR TEARS", "artista": "The Weeknd", "duracao": "3:35", "id": 13},
+        {"nome": "ON THE GROUND", "artista": "Rosé", "duracao": "3:10", "id": 14},
+        {"nome": "GOOD 4 U", "artista": "Olivia Rodrigo", "duracao": "2:58", "id": 15},
+        {"nome": "MONTERO", "artista": "Lil Nas X", "duracao": "2:18", "id": 16},
+        {"nome": "STAY", "artista": "The Kid LAROI & Justin Bieber", "duracao": "2:21", "id": 17},
+        {"nome": "HEAT WAVES", "artista": "Glass Animals", "duracao": "3:58", "id": 18},
+        {"nome": "SHIVERS", "artista": "Ed Sheeran", "duracao": "3:27", "id": 19},
+        {"nome": "PEACHES", "artista": "Justin Bieber ft. Daniel Caesar & Giveon", "duracao": "3:18", "id": 20},
+        {"nome": "DON'T START NOW", "artista": "Dua Lipa", "duracao": "3:03", "id": 21},
+        {"nome": "WAP", "artista": "Cardi B ft. Megan Thee Stallion", "duracao": "3:07", "id": 22},
+        {"nome": "SAVAGE LOVE", "artista": "Jawsh 685 & Jason Derulo", "duracao": "2:56", "id": 23},
+        {"nome": "WATERMELON SUGAR", "artista": "Harry Styles", "duracao": "2:54", "id": 24},
+        {"nome": "ADORE YOU", "artista": "Harry Styles", "duracao": "3:27", "id": 25},
+        {"nome": "DON'T PLAY", "artista": "Anne-Marie, KSI, Digital Farm Animals", "duracao": "3:23", "id": 26},
+        {"nome": "TOXIC", "artista": "Britney Spears", "duracao": "3:19", "id": 27},
+        {"nome": "SHAPE OF YOU", "artista": "Ed Sheeran", "duracao": "3:53", "id": 28},
+        {"nome": "SHALLOW", "artista": "Lady Gaga & Bradley Cooper", "duracao": "3:36", "id": 29},
+        {"nome": "BLINDING LIGHTS", "artista": "The Weeknd", "duracao": "3:20", "id": 30},
+        {"nome": "ASTRONAUT IN THE OCEAN", "artista": "Masked Wolf", "duracao": "2:11", "id": 31},
+        {"nome": "DUNE", "artista": "Lorde", "duracao": "4:32", "id": 32},
+        {"nome": "STARBOY", "artista": "The Weeknd ft. Daft Punk", "duracao": "3:50", "id": 33},
+        {"nome": "HAPPIER", "artista": "Ed Sheeran", "duracao": "3:28", "id": 34},
+        {"nome": "CALL ME MAYBE", "artista": "Carly Rae Jepsen", "duracao": "3:13", "id": 35},
+        {"nome": "GOD'S PLAN", "artista": "Drake", "duracao": "3:19", "id": 36},
+        {"nome": "SICKO MODE", "artista": "Travis Scott", "duracao": "5:12", "id": 37},
+        {"nome": "TAKE CARE", "artista": "Drake ft. Rihanna", "duracao": "4:37", "id": 38},
+        {"nome": "OLD TOWN ROAD", "artista": "Lil Nas X ft. Billy Ray Cyrus", "duracao": "1:53", "id": 39},
+        {"nome": "NO TEARS LEFT TO CRY", "artista": "Ariana Grande", "duracao": "3:25", "id": 40},
+        {"nome": "SENORITA", "artista": "Shawn Mendes & Camila Cabello", "duracao": "3:11", "id": 41},
+        {"nome": "HIGHWAY TO HELL", "artista": "AC/DC", "duracao": "3:28", "id": 42},
+        {"nome": "EYE OF THE TIGER", "artista": "Survivor", "duracao": "4:04", "id": 43},
+        {"nome": "I WILL SURVIVE", "artista": "Gloria Gaynor", "duracao": "3:17", "id": 44},
+        {"nome": "SHINE", "artista": "Collective Soul", "duracao": "3:45", "id": 45},
+        {"nome": "BILLIE JEAN", "artista": "Michael Jackson", "duracao": "4:54", "id": 46},
+        {"nome": "UPTOWN FUNK", "artista": "Mark Ronson ft. Bruno Mars", "duracao": "4:30", "id": 47},
+        {"nome": "JUST DANCE", "artista": "Lady Gaga", "duracao": "4:02", "id": 48},
+        {"nome": "ROLLING IN THE DEEP", "artista": "Adele", "duracao": "3:48", "id": 49},
+        {"nome": "HALO", "artista": "Beyoncé", "duracao": "4:21", "id": 50}
     ],
     "playlists": [],
     "historico": {
         "curtidas": [],
-        "nao_curtidas": []
+        "nao_curtidas": [],
+        "busca":[]
     }
 }
+
+
 
 # Menu inicial
 while True:
