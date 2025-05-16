@@ -1,0 +1,51 @@
+def editar_playlist():
+    limpar_tela()
+    print("=== EDITAR PLAYLIST ===")
+
+    if not dados["playlists"]:
+        print("Nenhuma playlist criada ainda.")
+        time.sleep(2)
+        return
+
+    print("Playlists disponíveis:")
+    for idx in range(len(dados["playlists"])):
+        print("{} - {}".format(idx + 1, dados["playlists"][idx]["nome"]))
+
+    escolha = input("\nEscolha o número da playlist para editar ou ENTER para cancelar: ")
+    if escolha == "":
+        return
+
+    pos = int(escolha) - 1
+    if pos >= 0 and pos < len(dados["playlists"]):
+        playlist = dados["playlists"][pos]
+        print("\nEditando a playlist '{}'".format(playlist["nome"]))
+        print("1. Adicionar música")
+        print("2. Remover música")
+        print("3. Voltar")
+
+        acao = input("\nOpção: ")
+
+        if acao == "1":
+            nome_musica = input("Nome da música a adicionar: ").upper()
+            for musica in dados["musicas"]:
+                if nome_musica == musica["nome"]:
+                    playlist["musicas"].append(musica)
+                    print("Música adicionada!")
+                    break
+            else:
+                print("Música não encontrada.")
+
+        elif acao == "2":
+            for i in range(len(playlist["musicas"])):
+                print("{} - {}".format(i + 1, playlist["musicas"][i]["nome"]))
+            rem = input("Digite o número da música para remover: ")
+            if rem.isdigit():
+                idx_rem = int(rem) - 1
+                if idx_rem >= 0 and idx_rem < len(playlist["musicas"]):
+                    removida = playlist["musicas"].pop(idx_rem)
+                    print("Música '{}' removida.".format(removida["nome"]))
+    else:
+        print("Playlist inválida.")
+
+    time.sleep(2)
+    limpar_tela()

@@ -8,9 +8,9 @@ def limpar_tela():
 
 # Cadastro de usuário
 def cadastro():
+    arquivo = open("usuario.txt", "a")
     limpar_tela()
     print("===== CADASTRO DE USUÁRIO =====\n")
-
     while True:
         nome = input('Digite o seu nome: ')
         user = input('Digite o seu user: ')
@@ -23,7 +23,7 @@ def cadastro():
             break  # Sai do loop se nome e user forem diferentes
 
     while True:
-        senha = input('\nDigite sua senha (mínimo 6 caracteres): ')
+        senha = str(input('\nDigite sua senha (mínimo 6 caracteres): '))
         if len(senha) < 6:
             print("\nA senha deve ter no mínimo 6 caracteres!")
             time.sleep(2)
@@ -36,20 +36,21 @@ def cadastro():
             print("\nRedirecionando para login!")
             time.sleep(2)
             break
-
+    banco = {"nome_u": nome, "user": user, "senha": senha}
+    arquivo.write(str(banco))
+    arquivo.close()
     return {"nome_u": nome, "user": user, "senha": senha}
-
-
+    
 # Login de usuário
 def login():
+    arquivo = open("usuario.txt", "r")
     limpar_tela()
     print('===== LOGIN =====')
     time.sleep(1)
     user = input('Digite o seu user: ')
     senha = input('Digite sua senha: ')
-
-    for usuario in dados["usuarios"]:
-        if usuario["user"] == user and usuario["senha"] == senha:
+    for linha in arquivo:
+        if user in linha and senha in linha:
             print("Login realizado com sucesso!")
             time.sleep(2)
             limpar_tela()
@@ -61,32 +62,36 @@ def login():
 
 # Buscar música
 def buscar_musica():
+    buscar_m = open("musicas.txt", "r")
     limpar_tela()
-    termo = input("Digite o nome da música: ").upper()
+    termo = str(input("Digite o nome da música: ").upper())
+    for linha in buscar_m:
+        if termo in linha:
+            print("Música encontrada")
 
-    for musica in dados["musicas"]:
-        if termo in musica["nome"]:
-            print("Música encontrada!")
-            print("\n{} - {} ({})".format(musica['nome'], musica['artista'], musica['duracao']))
-            dados["historico"]["busca"].append(musica)
+    # for musica in dados["musicas"]:
+    #     if termo in musica["nome"]:
+    #         print("Música encontrada!")
+    #         print("\n{} - {} ({})".format(musica['nome'], musica['artista'], musica['duracao']))
+    #         dados["historico"]["busca"].append(musica)
 
             
-            tocar = input("\nTocar? (S/N): ").upper()
-            if tocar == 'S':
-                print("\n▶ {} ――――――•――――― {}".format(musica['nome'], musica['duracao']))
-                time.sleep(3)
+    #         tocar = input("\nTocar? (S/N): ").upper()
+    #         if tocar == 'S':
+    #             print("\n▶ {} ――――――•――――― {}".format(musica['nome'], musica['duracao']))
+    #             time.sleep(3)
 
-            curtir = input("\nCurtir? (S/N): ").upper()
-            if curtir == 'S':
-                dados["historico"]["curtidas"].append(musica)
-                print("Música curtida com sucesso!")
-            elif curtir == 'N':
-                dados["historico"]["nao_curtidas"].append(musica)
-                print("Música não curtida!")
+    #         curtir = input("\nCurtir? (S/N): ").upper()
+    #         if curtir == 'S':
+    #             dados["historico"]["curtidas"].append(musica)
+    #             print("Música curtida com sucesso!")
+    #         elif curtir == 'N':
+    #             dados["historico"]["nao_curtidas"].append(musica)
+    #             print("Música não curtida!")
             
-            input("\nPressione ENTER para continuar...")
-            limpar_tela()
-            break
+    #         input("\nPressione ENTER para continuar...")
+    #         limpar_tela()
+    #         break
 
     else:
         print("\nMúsica não encontrada!")
@@ -218,10 +223,13 @@ def menu_playlists():
 
         if escolha == "1":
             buscar_musica()
+            limpar_tela()
         elif escolha == "2":
             gerenciar_playlist()
+            limpar_tela()
         elif escolha == "3":
             visualizar_hist()
+            limpar_tela()
         elif escolha == "4":
             print("=== VOLTANDO AO MENU INICIAL ===")
             limpar_tela()
@@ -233,7 +241,7 @@ def menu_playlists():
 
 # DICIONÁRIO
 dados = {
-    "usuarios": [],
+    "usuarios": [{"nome": "Sophia","user":"SS","senha":"123456"}],
     "musicas": [
         {"nome": "CINEMA", "artista": "Stray Kids", "duracao": "3:41", "id": 1},
         {"nome": "WHAT IS LOVE?", "artista": "Twice", "duracao": "3:28", "id": 2},
