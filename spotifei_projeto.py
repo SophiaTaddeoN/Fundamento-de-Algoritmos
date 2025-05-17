@@ -68,6 +68,7 @@ def buscar_musica():
     for linha in buscar_m:
         if termo in linha:
             print("Música encontrada")
+            
 
     # for musica in dados["musicas"]:
     #     if termo in musica["nome"]:
@@ -93,9 +94,9 @@ def buscar_musica():
     #         limpar_tela()
     #         break
 
-    else:
-        print("\nMúsica não encontrada!")
-        time.sleep(2)
+        else:
+            print("\nMúsica não encontrada!")
+            time.sleep(2)
 
 
 #Criar Playlist
