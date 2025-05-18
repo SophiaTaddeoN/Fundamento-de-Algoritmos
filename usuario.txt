@@ -1,1 +1,9 @@
-{'nome_u': 'SS', 'user': 'S', 'senha': '123456'}{'nome_u': 'Sophia', 'user': 'S', 'senha': '123456'}{'nome_u': 'Ana', 'user': 'Aninha', 'senha': 'Aninha06'}{'nome_u': 'SS', 'user': 'S', 'senha': '123456'}
+Sophia 
+S 
+123
+Beatriz 
+B 
+123
+Joao 
+J 
+123

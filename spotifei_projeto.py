@@ -1,6 +1,7 @@
 #imports
 import time
 import os
+import ast
 
 # Limpar a tela
 def limpar_tela():
@@ -39,6 +40,9 @@ def cadastro():
     banco = {"nome_u": nome, "user": user, "senha": senha}
     arquivo.write(str(banco))
     arquivo.close()
+    with open("curtidas.txt", "a") as arquivo_curtidas:
+        arquivo_curtidas.write("[{}_curtidas]\n".format(user))
+        arquivo_curtidas.write("[{}_descurtidas]\n".format(user))
     return {"nome_u": nome, "user": user, "senha": senha}
     
 # Login de usuário
@@ -62,45 +66,72 @@ def login():
 
 # Buscar música
 def buscar_musica():
-    buscar_m = open("musicas.txt", "r")
-    limpar_tela()
-    termo = str(input("Digite o nome da música: ").upper())
-    for linha in buscar_m:
-        if termo in linha:
-            print("Música encontrada")
+    while True:
+        limpar_tela()  # Limpa a tela no começo do loop pra mostrar o menu/busca limpo
+        print("=== BUSCAR MÚSICAS ===")
+        nome_musica = input("Digite o nome da música: ").upper()
+
+        with open("musicas.txt", "r") as arquivo:
+            linhas = arquivo.readlines()
+
+        for linha in linhas:
+            if nome_musica in linha.upper():
             
 
-    # for musica in dados["musicas"]:
-    #     if termo in musica["nome"]:
-    #         print("Música encontrada!")
-    #         print("\n{} - {} ({})".format(musica['nome'], musica['artista'], musica['duracao']))
-    #         dados["historico"]["busca"].append(musica)
+                limpar_tela()  # Limpa a tela antes de mostrar a música encontrada
+                print("\nMúsica encontrada!")
+                print(linha)
+                limpar_tela()
+                tocar = input("\nDeseja tocar a música? (S/N): ").upper()
+                
+                if tocar == "S":
+                    print("\n▶ {}".format(linha))
 
-            
-    #         tocar = input("\nTocar? (S/N): ").upper()
-    #         if tocar == 'S':
-    #             print("\n▶ {} ――――――•――――― {}".format(musica['nome'], musica['duracao']))
-    #             time.sleep(3)
+                time.sleep(2)  # Pausa pra usuário ver o que aconteceu (tocando música)
 
-    #         curtir = input("\nCurtir? (S/N): ").upper()
-    #         if curtir == 'S':
-    #             dados["historico"]["curtidas"].append(musica)
-    #             print("Música curtida com sucesso!")
-    #         elif curtir == 'N':
-    #             dados["historico"]["nao_curtidas"].append(musica)
-    #             print("Música não curtida!")
-            
-    #         input("\nPressione ENTER para continuar...")
-    #         limpar_tela()
-    #         break
+                curtir = input("\nDeseja curtir a música? (S/N): ").upper()
+                if curtir == "S":
+                    with open("curtidas.txt", "a") as arquivo:
+                        arquivo.write(user,linha)
+                    print("\nMúsica adicionada às curtidas!")
+                    limpar_tela()
+                    time.sleep(1)  # Pausa pra confirmar que foi adicionada
+
+                break  # Sai do for após encontrar e tratar a música
 
         else:
             print("\nMúsica não encontrada!")
-            time.sleep(2)
+            time.sleep(2)  # Pausa para usuário ler a mensagem
+
+        opcao = input("\nDeseja buscar outra música? (S/N): ").upper()
+        if opcao == "N":
+            limpar_tela()  # Limpa a tela antes de sair da função, opcional
+            break
+
+       
+#Curtir/Descurtir Música
+def adicionar_curtida(user, linha):
+    with open("curtidas.txt", "r") as arquivo:
+        linhas = arquivo.readlines()
+
+    nova_linha = "{}\n".format(linha)
+    nova_linhas = []
+    adicionou = False
+
+    for i in range(len(linhas)):
+        nova_linhas.append(linhas[i])
+        if linhas[i].strip() == "[{}_curtidas]".format(user) and not adicionou:
+            # Adiciona a música na linha seguinte
+            nova_linhas.append(nova_linha)
+            adicionou = True
+
+    with open("curtidas.txt", "w") as arquivo:
+        arquivo.writelines(nova_linhas)
 
 
 #Criar Playlist
 def criar_playlist():
+    arquivo = open("playlist.txt", "a")
     limpar_tela()
     print("=== CRIAR PLAYLIST ===")
     nome = input("Nome da playlist: ")
@@ -118,7 +149,7 @@ def criar_playlist():
         else:
             print("Música não encontrada.")
 
-    dados["playlists"].append({"nome": nome, "musicas": playlist})
+    arquivo.write(playlist)
     print("Playlist criada com sucesso!")
 
 
