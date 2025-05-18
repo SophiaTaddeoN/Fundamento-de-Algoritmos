@@ -151,6 +151,7 @@ def criar_playlist():
 
     arquivo.write(playlist)
     print("Playlist criada com sucesso!")
+    limpar_tela()
 
 
 #Editar Playlist
@@ -182,6 +183,7 @@ def editar_playlist():
         acao = input("\nOpção: ")
 
         if acao == "1":
+            print("{} - {}".format(i + 1, playlist["musicas"][i]["nome"]))
             nome_musica = input("Nome da música a adicionar: ").upper()
             for musica in dados["musicas"]:
                 if nome_musica == musica["nome"]:
