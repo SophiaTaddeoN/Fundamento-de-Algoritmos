@@ -7,16 +7,12 @@ def checar_cad(user):
     arquivo.close()
 
     for i in range(1, len(linhas), 4):  # Pula de 4 em 4
-        usuario = linhas[i].strip()
+        usuario = linhas[i + 1].strip()
+
 
         if user == usuario:
             print("Usuário {} já cadastrado!".format(user))
-            nvo_cadastro = str(input("Deseja criar uma nova conta com outro usuário? (S/N) ")).upper()
-            if nvo_cadastro == "N":
-                return True
-            else:
-                return False
-    return False
+        return False
 
 
 def cadastro():
@@ -27,16 +23,18 @@ def cadastro():
     senha = input("\nSenha: ")
 
     e_cadastrado = checar_cad(user)
-    if e_cadastrado:
-        return False
+    if e_cadastrado == False:
+        nvo_cadastro = str(input("Deseja criar uma nova conta com outro usuário? (S/N) ")).upper()
+        if nvo_cadastro == "S":
+            cadastro()
+        else:
+            return False
+    
 
     bd = "\n{} \n{} \n{} \n".format(nome, user, senha)
     arquivo.write(bd)
     arquivo.close()
     return True
-
-
-   
 
 
 def login():
@@ -58,7 +56,44 @@ def login():
         print("Usuário ou senha incorretos.")
 
 
+def buscar_musicas():
+    while True:
+        nome_musica=str(input("Digite o nome da música: ")).upper()
+        arquivo = open("musicas.txt",'r')
+        linhas = arquivo.readlines()
 
+        for linha in linhas:
+            if nome_musica in linha:
+                print(linha)
+                quer_tocar=str(input("Tocar música? (S/N) ")).upper()
+                if quer_tocar == "S":
+                    print("\n▶ {}".format(linha))
+                elif quer_tocar == "N":
+                    break
+                else:
+                    print("Digite apenas S ou N")
+        buscar_dnvo= str(input("Deseja buscar uma música de novo? (S/N) "))
+        if buscar_dnvo == 'S':
+            buscar_musicas()
+        else:
+            return False
+        return False
+
+
+def gerenciar_playlist():
+    print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
+    oq_fazer = input("\nOpção: ")
+
+    if oq_fazer == '1':
+         print('alala')
+    if oq_fazer == '2':
+         print('alala')
+    if oq_fazer == '3':
+        print('alala')
+    if oq_fazer == '4':
+        print('lalala')
+    
+                
 
 #Menu secundario 
 def menu_playlist():
@@ -72,7 +107,7 @@ def menu_playlist():
         escolha = input("\nOpção: ")
 
         if escolha == "1":
-            print("lalal")
+            buscar_musicas()
         elif escolha == "2":
              print("lalal")
         elif escolha == "3":
