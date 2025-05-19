@@ -145,25 +145,21 @@ def gerenciar_playlist():
 def buscar_playlist():
     nome = input("Digite o nome da playlist: ").upper()
     mostrar == False
-    deu_certo == False
 
     arquivo= open("playlists.txt", "r")
     for linha in arquivo:
         texto = linha.strip().upper()
-
-    # Quando encontrar a playlist
-    if "PLAYLIST:" in texto and nome in texto:
-        print("Playlist encontrada!")
-        print(texto)
-        mostrar = True
-        if texto == "" or "PLAYLIST:" in texto.upper():
-            deu_certo =  True
-        print(texto)
+        if "PLAYLIST:" in texto and nome in texto:
+           print("Playlist encontrada!")
+           print(texto)
+           mostrar = True
+           continue
+        
             
     # Se estiver mostrando a playlist, exibe músicas
-    if mostrar == True:
-        if texto == "" or "PLAYLIST:" in texto.upper():
-            deu_certo =  True
+        if mostrar == True:
+          if texto == "" or "PLAYLIST:" in texto:
+            break
         print(texto)
 
     if mostrar == False:
