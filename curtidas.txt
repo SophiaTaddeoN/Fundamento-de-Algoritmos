@@ -1,0 +1,2 @@
+[S_curtidas]
+[S_descurtidas]
