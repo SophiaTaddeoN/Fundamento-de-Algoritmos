@@ -79,13 +79,33 @@ def buscar_musicas():
             return False
         return False
 
+def salvar_playlist(usuario, nome_playlist, musicas):
+    arquivo = open("playlists.txt", "a")
+    arquivo.write("USUARIO: {}\n".format(usuario))
+    arquivo.write("PLAYLIST: {}\n".format(nome_playlist))
+    for musica in musicas:
+        arquivo.write("MUSICA: {}\n \n".format(musica))
+
+
+def criar_playlist():
+    usuario = input("Digite seu usuário: ")
+    nome_playlist = input("Nome da playlist: ")
+    musicas = []
+    print("Digite o nome das músicas (digite vazio para terminar):")
+    while True:
+        musica = input("> ")
+        if musica == "":
+            break
+        musicas.append(musica)
+    salvar_playlist(usuario, nome_playlist, musicas)
+    print("Playlist salva com sucesso!")
 
 def gerenciar_playlist():
     print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
     oq_fazer = input("\nOpção: ")
 
     if oq_fazer == '1':
-         print('alala')
+         criar_playlist()
     if oq_fazer == '2':
          print('alala')
     if oq_fazer == '3':
@@ -109,7 +129,7 @@ def menu_playlist():
         if escolha == "1":
             buscar_musicas()
         elif escolha == "2":
-             print("lalal")
+             gerenciar_playlist()
         elif escolha == "3":
              print("lalal")
         elif escolha == "4":
