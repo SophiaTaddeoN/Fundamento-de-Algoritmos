@@ -13,7 +13,7 @@ def checar_cad(user):
         if user == usuario:
             print("Usuário {} já cadastrado!".format(user))
         return False
-    
+
 
 def cadastro():
     arquivo = open("usuario.txt", "a")
@@ -51,6 +51,7 @@ def login():
 
         if user == usuario and senha == senha_arquivo:
             print("Login realizado com sucesso! Bem-vindo(a), {}".format(nome))
+            return user
             break
     else:
         print("Usuário ou senha incorretos.")
@@ -78,55 +79,34 @@ def buscar_musicas():
         else:
             return False
         return False
-    
 
 def salvar_playlist(usuario, nome_playlist, musicas):
     arquivo = open("playlists.txt", "a")
-    arquivo.write("USUARIO: {}\n".format(usuario))
+    arquivo.write("USUARIO: {} = [\n".format(usuario))
     arquivo.write("PLAYLIST: {}\n".format(nome_playlist))
     for musica in musicas:
-        arquivo.write("MUSICA: {}".format(musica))
-
-
-def editar_playlist():
-    print("\n1. Excluir música de playlist\n2. Adicionar música à playlist existente\n3. Trocar nome da Playlist\n4. Voltar")
-    oq_fazer = input("\nOpção: ")
-
-    if oq_fazer == '1':
-        print("A")
-    elif oq_fazer == '2':
-        print("alallaalalla")
-    elif oq_fazer == "3":
-        print("alallaalalla")
-    elif oq_fazer == "4":
-        print("alallaalalla")
-    else:
-        print("Número inválido, apenas 1, 2, 3 e 4 ")
+        arquivo.write("MUSICA: {}\n".format(musica))
+    arquivo.write("]\n")  # Fecha a "lista"
+    arquivo.close()
 
 
 def criar_playlist():
-    musicas = []
     usuario = input("Digite seu usuário: ")
     nome_playlist = input("Nome da playlist: ")
-
+    musicas = []
+    print("Digite o nome das músicas (digite vazio para terminar):")
     while True:
-        nome_m = input("Música (ou ENTER para sair): ").upper()
-        if nome_m == "":
+        musica = input("> ")
+        if musica == "":
             break
-
-        arquivo = open("musicas.txt","r")
-        for linha in arquivo:
-            if nome_m in linha.upper():
-                print("Música encontrada!")
-                print(linha)
-                musicas.append(linha)
-                break
-            else:
-               print("Não encontrada.")
-
+        musicas.append(musica)
     salvar_playlist(usuario, nome_playlist, musicas)
     print("Playlist salva com sucesso!")
 
+
+
+def editar_playlist():
+    print("lalala")
 
 def gerenciar_playlist():
     print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
@@ -135,36 +115,13 @@ def gerenciar_playlist():
     if oq_fazer == '1':
          criar_playlist()
     if oq_fazer == '2':
-         editar_playlist()
+         print('alala')
     if oq_fazer == '3':
         print('alala')
     if oq_fazer == '4':
         print('lalala')
-
-
-def buscar_playlist():
-    nome = input("Digite o nome da playlist: ").upper()
-    mostrar == False
-
-    arquivo= open("playlists.txt", "r")
-    for linha in arquivo:
-        texto = linha.strip().upper()
-        if "PLAYLIST:" in texto and nome in texto:
-           print("Playlist encontrada!")
-           print(texto)
-           mostrar = True
-           continue
-        
-            
-    # Se estiver mostrando a playlist, exibe músicas
-        if mostrar == True:
-          if texto == "" or "PLAYLIST:" in texto:
-            break
-        print(texto)
-
-    if mostrar == False:
-        print("Playlist não encontrada.")
-
+    
+                
 
 #Menu secundario 
 def menu_playlist():
