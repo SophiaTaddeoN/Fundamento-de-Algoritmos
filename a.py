@@ -94,19 +94,49 @@ def criar_playlist():
     usuario = input("Digite seu usuário: ")
     nome_playlist = input("Nome da playlist: ")
     musicas = []
-    print("Digite o nome das músicas (digite vazio para terminar):")
+    print("=== CRIAR PLAYLIST ===")
+
+
     while True:
-        musica = input("> ")
+        musica = input("Digite o nome da música ou pressione ENTER para finalizar:  ").upper()
         if musica == "":
             break
-        musicas.append(musica)
+        arquivo = open("musicas.txt","r")
+        achou_musica = None
+        for linha in arquivo:
+            nome_arquivo = linha.upper().split(" - ")[0]
+            if musica == nome_arquivo:
+                achou_musica = linha.strip()
+                break
+        arquivo.close()
+
+        if achou_musica:
+            musicas.append(achou_musica)
+            print("Música adicionada: {}\n".format(achou_musica))
+        else:
+            print("Música não encontrada.\n")
+
     salvar_playlist(usuario, nome_playlist, musicas)
     print("Playlist salva com sucesso!")
 
 
+def editar_playlist(): 
+     while True:
+        nome_usuario_ep=str(input("Digite o nome do usuário: ")).upper()
+        nome_playlist_ep=str(input("Digite o nome da playlist: ")).upper()
 
-def editar_playlist():
-    print("lalala")
+        arquivo = open("playlists.txt",'r')
+        linhas = arquivo.readlines()
+        for linha in linhas:
+            if nome_usuario_ep in linha:
+                print("Usuário encontrado!")
+                if nome_playlist_ep in linha:
+                    print(linha)
+
+
+
+
+
 
 def gerenciar_playlist():
     print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
@@ -115,7 +145,7 @@ def gerenciar_playlist():
     if oq_fazer == '1':
          criar_playlist()
     if oq_fazer == '2':
-         print('alala')
+         editar_playlist()
     if oq_fazer == '3':
         print('alala')
     if oq_fazer == '4':
