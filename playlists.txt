@@ -1,11 +1,2 @@
-USUARIO: S = [
-PLAYLIST: AAA = [
-MUSICA: LOCO - ITZY (3:25)
-MUSICA: CINEMA - Stray Kids (3:41)
-]]
-USUARIO: S = [
-PLAYLIST: 123 = [
-MUSICA: FANCY - Twice (3:45)
-MUSICA: LOCO - ITZY (3:25)
-MUSICA: CINEMA - Stray Kids (3:41)
-]]
+{"S": {"AAAAAAA": ["CINEMA - Stray Kids (3:41)", "LOCO - ITZY (3:25)", "HALO - Beyonc\u00c3\u00a9 (4:21)"]}}
+{"S": {"TESTE": ["WHAT IS LOVE? - Twice (3:28)", "KILL THIS LOVE - BLACKPINK (3:14)"]}}
