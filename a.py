@@ -89,7 +89,6 @@ def salvar_playlist(usuario, nome_playlist, musicas):
     arquivo.write("]\n")  # Fecha a "lista"
     arquivo.close()
 
-
 def criar_playlist():
     usuario = input("Digite seu usuário: ")
     nome_playlist = input("Nome da playlist: ")
@@ -120,22 +119,134 @@ def criar_playlist():
     print("Playlist salva com sucesso!")
 
 
-def editar_playlist(): 
-     while True:
-        nome_usuario_ep=str(input("Digite o nome do usuário: ")).upper()
-        nome_playlist_ep=str(input("Digite o nome da playlist: ")).upper()
 
-        arquivo = open("playlists.txt",'r')
-        linhas = arquivo.readlines()
-        for linha in linhas:
-            if nome_usuario_ep in linha:
-                print("Usuário encontrado!")
-                if nome_playlist_ep in linha:
+def editar_playlist():
+    usuario = input("Digite seu usuário: ")
+    nome_playlist = input("Nome da playlist: ")
+    musicas_novas = []
+    arquivo_novo = linhas.copy
+    print("=== EDITAR PLAYLIST ===")
+
+    arquivo = open("playlists.txt",'r')
+    linhas = arquivo.readlines()
+    arquivo_novo.append(linhas)
+    arquivo = open("playlists.txt","r")
+
+    while True:
+        add_rem = input("Digite o A para adicionar e R para remover uma musica: ").upper()
+        if add_rem == "":
+            break
+        achou_usuario = False
+        achou_playlist=[]
+        for linha in arquivo:
+            if "USUÁRIO: {}[".format(usuario) in linha:
+                musicas_novas.append(linha)
+                return achou_usuario == True
+        arquivo.close()
+
+        if achou_usuario == True:
+            for linha in arquivo:
+                if "PlAYLIST: {}".format(nome_playlist) in arquivo:
+                    musicas_novas.append(linha)
+                    return achou_playlist == True
+            arquivo.close()
+        
+        if add_rem == "A":
+            musica_add=str(input("Digite o nome da música a ser ADICIONADA: "))
+            arquivo_m=open("musicas.txt",'r')
+            for linha in arquivo_m:
+                if add_rem in linha:
                     print(linha)
+            musicas_novas.append(musica_add)
+            print("Música adicionada: {}\n".format(linha))
+
+            if add_rem not in linha:
+                print("Música não encontrada.\n")
+        
+        if add_rem == "R":
+            musica_add=str(input("Digite o nome da música a ser REMOVIDA: "))
+            musicas_novas.remove(musica_add)
+            print("Música removida: {}\n".format(musica_add))
+        else:
+            print("Música não encontrada.\n")
+            break
+        
+        arquivo_novo.append(musicas_novas)
+        arquivo = open("playlists.txt", "w") 
+        arquivo.writelines(arquivo_novo)
+
+    print("Playlist salva com sucesso!")
+# def editar_playlist(): 
+#     nome_usuario_ep=str(input("Digite o nome do usuário: ")).upper()
+#     nome_playlist_ep=str(input("Digite o nome da playlist: ")).upper()
+
+#     arquivo_atualizado=[]
+#     achou_user=False
+#     achou_playlist=False
+#     musicas_novas=[]
+
+#     arquivo = open("playlists.txt",'r')
+#     linhas = arquivo.readlines()
+
+    
+#     for linha in linhas:
+#         if "USUARIO: {} = [".format(nome_usuario_ep) in linha:
+#             achou_user = True
+#             musicas_novas.append(linha)
+#             arquivo_atualizado.append(linha)
 
 
+#         elif achou_user and "PLAYLIST: {} =".format(nome_playlist_ep) in linha:
+#             achou_playlist = True
+#             musicas_novas.append(linha)
 
 
+#         elif achou_playlist:
+#             if "MUSICA:" in linha:
+#                 musicas_novas.append(linha)
+#             elif "]" in linha:
+#                 print("\nPlaylist encontrada:\n")
+#                 for musica in musicas_novas:
+#                     print(musica.strip())
+#                 achou_playlist = False  # para não continuar adicionando linhas dessa playlist
+
+#         add_rem = input("\nDigite A para adicionar uma musica e R para remover uma música da playlist: ").upper()
+
+#         if add_rem == "A":
+#             while True:
+#                 nome_musica=str(input("Digite o nome da música a ADICIONAR: ")).upper()
+#                 arquivo = open("musicas.txt",'r')
+#                 linhas = arquivo.readlines()
+
+#                 for linha in linhas:
+#                    if nome_musica in linha:
+#                       print(linha)
+#                       musicas_novas.append("MUSICA: {}\n]".format(linha))
+#                       print("Música adicionada!")
+#                    elif nome_musica == "":
+#                        break
+                
+#         if add_rem == "R":
+#             while True:
+#                 nome_musica=str(input("Digite o nome da música a REMOVER: ")).upper()
+#                 arquivo = open("musicas.txt",'r')
+#                 linhas = arquivo.readlines()
+
+#                 for linha in linhas:
+#                     if nome_musica in linha:
+#                       print(linha)
+#                       musicas_novas.remove("MUSICA: {}\n".format(linha))
+#                       print("Música removida!")
+#                       break
+#                 break
+#             break
+#         for musica in musicas_novas:
+#             arquivo_atualizado.append(musica)
+
+#     arquivo = open("playlists.txt", "w") 
+#     arquivo.writelines(arquivo_atualizado)
+
+#     print("\nPlaylist atualizada com sucesso!\n")
 
 
 def gerenciar_playlist():
