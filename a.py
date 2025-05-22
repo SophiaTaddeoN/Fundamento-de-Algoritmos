@@ -125,59 +125,10 @@ def criar_playlist():
 
 
 
-
-    arquivo = open("playlists.txt",'r')
-    linhas = arquivo.readlines()
-    arquivo_novo.append(linhas)
-
-    while True:
-        add_rem = input("Digite o A para adicionar e R para remover uma musica: ").upper()
-        if add_rem == "":
-            break
-        achou_usuario = False
-        achou_playlist=[]
-        for linha in arquivo:
-            if "USUÁRIO: {}[".format(usuario) in linha:
-                musicas_novas.append(linha)
-                return achou_usuario == True
-        arquivo.close()
-
-        if achou_usuario == True:
-            for linha in arquivo:
-                if "PlAYLIST: {}".format(nome_playlist) in arquivo:
-                    musicas_novas.append(linha)
-                    return achou_playlist == True
-            arquivo.close()
-        
-        if add_rem == "A":
-            musica_add=str(input("Digite o nome da música a ser ADICIONADA: "))
-            arquivo_m=open("musicas.txt",'r')
-            for linha in arquivo_m:
-                if add_rem in linha:
-                    print(linha)
-            musicas_novas.append(musica_add)
-            print("Música adicionada: {}\n".format(linha))
-
-            if add_rem not in linha:
-                print("Música não encontrada.\n")
-        
-        if add_rem == "R":
-            musica_add=str(input("Digite o nome da música a ser REMOVIDA: "))
-            musicas_novas.remove(musica_add)
-            print("Música removida: {}\n".format(musica_add))
-        else:
-            print("Música não encontrada.\n")
-            break
-        
-        arquivo_novo.append(musicas_novas)
-        arquivo = open("playlists.txt", "w") 
-        arquivo.writelines(arquivo_novo)
-
-    print("Playlist salva com sucesso!")
-
 def editar_playlist():
     arquivo = open("playlists.txt", 'r')
     linhas = arquivo.readlines()
+    arquivo.close()
 
     usuario = input("Digite o seu usuário: ")
     nome_playlist = input("Digite o nome da playlist: ")
@@ -190,25 +141,32 @@ def editar_playlist():
             print("Músicas atuais:")
             for musica in dados[usuario][nome_playlist]:
                 print("-", musica)
-            add_rem=str(input("Digite A para ADICIONAR e R para REMOVER: "))
+
+            add_rem = str(input("Digite A para ADICIONAR e R para REMOVER: "))
 
             if add_rem == "A":
                 musica = input("Digite o nome da música ou pressione ENTER para finalizar:  ").upper()
                 if musica == "":
                     break
-                arquivo = open("musicas.txt","r")
-        
-                for linha in arquivo:
-                   nome_arquivo = linha.upper().split(" - ")[0]
-                if musica == nome_arquivo:
-        
-                   dados[usuario][nome_playlist].append(musica)
-                   print("Música(s) adicionada(s)")
 
+                arquivo = open("musicas.txt", "r")
+
+                for linha in arquivo:
+                    nome_arquivo = linha.upper().split(" - ")[0]
+                    if musica == nome_arquivo:
+                        dados[usuario][nome_playlist].append(musica)
+                        print(linha)
+                        print("Música(s) adicionada(s)")
+                        break
                 else:
-                   print("Música não encontrada.\n")
-                   break
-        arquivo.close()
+                    print("Música não encontrada.\n")
+
+                linhas[linhas.index(linha)] = json.dumps(dados) + '\n'
+
+
+                arquivo_a=open("playlists.txt","w")
+                arquivo_a.writelines(linhas)
+                arquivo.close()
 
         
             
