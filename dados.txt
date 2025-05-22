@@ -268,25 +268,12 @@
         "curtidas": [
             {
                 "usuario": "S",
-                "musica": "CINEMA"
-            },
-            {
-                "usuario": "S",
-                "musica": "JUST DANCE"
-            },
-            {
-                "usuario": "S",
-                "musica": "HALO"
-            }
-        ],
-        "nao_curtidas": [
-            {
-                "usuario": "S",
                 "musica": "CINEMA",
                 "artista": "STRAY KIDS",
                 "duracao": "3:41"
-            }
+            },
         ],
+        "nao_curtidas": [],
         "busca": []
     }
 }
