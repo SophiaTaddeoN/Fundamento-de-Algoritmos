@@ -290,8 +290,25 @@
                     "artista": "TWICE",
                     "duracao": "3:45"
                 }
+            },
+            {
+                "usuario": "S",
+                "musicas": {
+                    "musica": "JUST DANCE",
+                    "artista": "LADY GAGA",
+                    "duracao": "4:02"
+                }
             }
         ],
-        "nao_curtidas": []
+        "nao_curtidas": [
+            {
+                "usuario": "G",
+                "musicas": {
+                    "musica": "CINEMA",
+                    "artista": "STRAY KIDS",
+                    "duracao": "3:41"
+                }
+            }
+        ]
     }
 }
