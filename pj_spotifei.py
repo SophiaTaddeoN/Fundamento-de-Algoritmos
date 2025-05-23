@@ -1,18 +1,13 @@
 import json
+import time
+import os
+import ast
 
-# def checar_cad(user):
-#     with open("dados.txt", "r", encoding="utf-8") as f:
-#         dados = json.load(f)
-
-#     for u in dados["usuarios"]:
-#         if u["user"] == user:
-#             print("Usuário {} já cadastrado!".format(user))
-#             return True
-#     return False
-
-
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def cadastro():  
+
     arquivo_dados=open("dados.txt", "r")
     dados=json.load(arquivo_dados)
     arquivo_dados.close()
@@ -24,194 +19,483 @@ def cadastro():
     for usuario in dados["usuarios"]:
         if usuario["user"] == user:
             print("Usuário {} já cadastrado!".format(user))
+            time.sleep(2)
+            limpar_tela()
+            
+            print("=== CADASTRO ===")
             nvo_cadastro = input("Deseja tentar outro usuário? (S/N) ").upper()
             if nvo_cadastro == "S":
+                
                 return cadastro()
+           
             else:
                 return False
 
     novo_cadastro = {"nome": nome, "user": user, "senha": senha}
     dados["usuarios"].append(novo_cadastro)
-
+    
     arquivo_ler=open("dados.txt","w")
     json.dump(dados, arquivo_ler,indent=4, ensure_ascii=False)
+    arquivo_ler.close()
         
-
     print("Usuário cadastrado com sucesso!")
+    time.sleep(2)
+    limpar_tela()
+    
     return True
 
 
 def login():
+
     arquivo_dados=open("dados.txt", "r")
     dados=json.load(arquivo_dados)
     arquivo_dados.close()
+
     print("=== LOGIN ===")
     user = input("User: ")
     senha = input("Senha: ")
     for usuario in dados["usuarios"]:
         if usuario["user"] == user and usuario["senha"] == senha:
+            
             print("Login realizado com sucesso! ")
             usuario_l=user
+            time.sleep(2)
+            limpar_tela()
+            
             return usuario_l
     
     print("Usuário ou senha incorretos")
+    time.sleep(2)
+    limpar_tela()
+    arquivo_dados=open("dados.txt", "r")
+    dados=json.load(arquivo_dados)
+    arquivo_dados.close()
+    
+    
     return False
 
 
 def vizualizar_hist(user):
+
     arquivo_dados=open("dados.txt", "r")
     dados=json.load(arquivo_dados)
     arquivo_dados.close()
-    ver_hist=str(input("Digite C para ver o histórico de CURTIDAS e D para ver o histórico de DESCURTIDAS: "))
-    if ver_hist == "C":
+
+    print("=== VIZUALIZAR HISTÓRICO ===")
+    print("\n1. Músicas Curtidas\n2. Músicas Não-Curtidas")
+
+    ver_hist = input("\nOpção: ")
+
+    time.sleep(1)
+    limpar_tela()
+    
+
+    if ver_hist == "1":
         print("=== MÚSICAS CURTIDAS ===")
         for curtida in dados["historico"]["curtidas"]:
             if curtida["usuario"] == user:
-                print("{} - {} ({})".format(curtida["musica"], curtida["artista"], curtida["duracao"]))
-
+                print("{} - {} ({})".format(curtida["musicas"]["musica"], curtida["musicas"]["artista"], curtida["musicas"]["duracao"]))
+                time.sleep(6)
+                limpar_tela()
+            
                 
-    elif ver_hist == "D":
+    elif ver_hist == "2":
         print("=== MÚSICAS NÃO CURTIDAS ===")
         for n_curtida in dados["historico"]["nao_curtidas"]:
             if n_curtida["usuario"] == user:
-                print("{} - {} ({})".format(n_curtida["musica"],n_curtida["artista"], n_curtida["duracao"]))
+                print("{} - {} ({})".format(n_curtida["musicas"]["musica"],n_curtida["musicas"]["artista"], n_curtida["musicas"]["duracao"]))
+                time.sleep(6)
+                limpar_tela()
                 
-
-
-def curtir_musicas(user,nome_musica):
+                
+def curtir_m(user,nome_musica):
     arquivo_dados=open("dados.txt", "r")
     dados=json.load(arquivo_dados)
     arquivo_dados.close()
 
-    checar_curtidas(user,nome_musica)
+    print("=== CURTIR MÚSICA ===")
+    musica_curtida=[]
     for musica in dados["musicas"]:
         if musica["nome"].upper() == nome_musica:
-            dados["historico"]["curtidas"].append({
-                "usuario": user,
+            time.sleep(1)
+            print("Música encontrada!")
+            time.sleep(1)
+            print("{} - {} - ({})".format(musica["nome"], musica["artista"], musica["duracao"]))
+            musica_curtida = {
                 "musica": musica["nome"],
                 "artista": musica["artista"],
                 "duracao": musica["duracao"]
+                }
+    if musica_curtida:
+        dados["historico"]["curtidas"].append({
+            "usuario": user,
+            "musicas": musica_curtida,
             })
-            print("Você curtiu a música {} - {} -({})!".format(musica["nome"], musica["artista"], musica["duracao"]))
-            break
-    arquivo_ler = open("dados.txt", "w")
-    json.dump(dados, arquivo_ler, indent=4, ensure_ascii=False)
-    arquivo_ler.close()
-    
-
-def descurtir_musicas(user,nome_musica):
-    arquivo_dados=open("dados.txt", "r")
-    dados=json.load(arquivo_dados)
-    arquivo_dados.close()
-    for musica in dados["musicas"]:
-        if musica["nome"].upper() == nome_musica:
-            dados["historico"]["nao_curtidas"].append({
-                "usuario": user,
-                "musica": musica["nome"],
-                "artista": musica["artista"],
-                "duracao": musica["duracao"]
-            })
-            print("Você não curtiu a música {} - {} -({})!".format(musica["nome"], musica["artista"], musica["duracao"]))
-            break
-    arquivo_ler = open("dados.txt", "w")
-    json.dump(dados, arquivo_ler, indent=4, ensure_ascii=False)
-    arquivo_ler.close()
-
-
-def checar_curtidas(user,nome_musica):
-    arquivo_dados = open("dados.txt", "r")
-    dados = json.load(arquivo_dados)
-    arquivo_dados.close()
-    for curtida in dados["historico"]["curtidas"]:
-        if curtida["usuario"] == user and curtida["musica"].upper() == nome_musica:
-            print("Você já curtiu essa música!")
-            quer_descurtir=str(input("Descurtir Música? (S/N): "))
-            if quer_descurtir == 'S':
-              nova_lista_curtidas = []
-              for item in dados["historico"]["curtidas"]:
-                    if not (item["usuario"] == user and item["musica"].upper() == nome_musica):
-                        nova_lista_curtidas.append(item)
-              dados["historico"]["curtidas"] = nova_lista_curtidas
-
-              dados["historico"]["nao_curtidas"].append({
-                    "usuario": user,
-                    "musica": nome_musica})
-              arquivo_ler=open("dados.txt", "w")
-              json.dump(dados, arquivo_ler, indent=4, ensure_ascii=False)
-
-              print("Música descurtida com sucesso.")
-              return True 
-            if quer_descurtir == "N":
-             print('colocar algo aqui')
-             return False
+        print("Música curtida com sucesso!")
+        time.sleep(2)
+        limpar_tela()
             
-    arquivo_ler = open("dados.txt", "w")
-    json.dump(dados, arquivo_ler, indent=4, ensure_ascii=False)
-    arquivo_ler.close()
+    arquivo_dados = open("dados.txt", "w")
+    json.dump(dados, arquivo_dados, indent=4)
+    arquivo_dados.close()
 
-def checar_descurtidas(user,nome_musica):
+def descurtir_m(user,nome_musica):
+    arquivo_dados=open("dados.txt", "r")
+    dados=json.load(arquivo_dados)
+    arquivo_dados.close()
+
+    print("=== DESCURTIR MÚSICA ===")
+    musica_descurtida=[]
+    for musica in dados["musicas"]:
+        if musica["nome"].upper() == nome_musica:
+            time.sleep(1)
+            print("Música encontrada!")
+            time.sleep(1)
+            print("{} - {} - ({})".format(musica["nome"], musica["artista"], musica["duracao"]))
+            musica_descurtida = {
+                "usuario":user,
+                "musica": musica["nome"],
+                "artista": musica["artista"],
+                "duracao": musica["duracao"]
+                }
+    if musica_descurtida:
+        dados["historico"]["nao_curtidas"].append({
+            "usuario": user,
+            "musicas": musica_descurtida,
+            })
+        print("Música não curtida com sucesso!")
+        time.sleep(2)
+        limpar_tela()
+
+    arquivo_dados = open("dados.txt", "w")
+    json.dump(dados, arquivo_dados, indent=4)
+    arquivo_dados.close()
+
+
+def retirar_c_d(user):
+
+    arquivo_dados=open("dados.txt", "r")
+    dados=json.load(arquivo_dados)
+    arquivo_dados.close()
+
+    print("=== RETIRAR CURTIDA OU DESCURTIDA ===")
+
+    print("\n1. Retirar Curtida\n2. Retirar Descurtida\n3.Voltar")
+
+    escolha=input("\nOpção: ")
+
+    time.sleep(1)
+    limpar_tela()
+
+           
+
+    if escolha == "1":
+         for curtida in dados["historico"]["curtidas"]:
+            if curtida["usuario"] == user:
+                print("{} - {} ({})".format(curtida["musicas"]["musica"], curtida["musicas"]["artista"], curtida["musicas"]["duracao"]))
+                break
+
+    nome_musica = str(input("\nDigite o nome da música: ")).upper().strip()
+    for musica in dados["historico"]["curtidas"]:
+        if musica["musicas"]["musica"].upper() == nome_musica and musica["usuario"] == user:
+            time.sleep(1)
+            print("Música encontrada!")
+            time.sleep(1)
+                
+                
+            dados["historico"]["curtidas"].remove(musica)
+            print("Música removida com sucesso!")
+            arquivo_dados = open("dados.txt", "w")
+            json.dump(dados, arquivo_dados, indent=4)
+            arquivo_dados.close()
+            time.sleep(2)
+            limpar_tela()
+                
+                
+            break
+    
+    if escolha == "2":
+        for curtida in dados["historico"]["nao_curtidas"]:
+            if curtida["usuario"] == user:
+                print("{} - {} ({})".format(curtida["musicas"]["musica"], curtida["musicas"]["artista"], curtida["musicas"]["duracao"]))
+                
+        nome_musica = str(input("Digite o nome da música: ")).upper().strip()
+        for musica in dados["historico"]["nao_curtidas"]:
+            if musica["musicas"]["musica"].upper() == nome_musica and musica["usuario"] == user:
+                print("Música encontrada!")
+
+                time.sleep(2)
+                limpar_tela()
+                
+                
+                dados["historico"]["nao_curtidas"].remove(musica)
+                print("Música removida com sucesso!")
+                arquivo_dados = open("dados.txt", "w")
+                json.dump(dados, arquivo_dados, indent=4)
+                arquivo_dados.close()
+                
+                
+                break
+
+
+def buscar_musicas(user):
+
     arquivo_dados = open("dados.txt", "r")
     dados = json.load(arquivo_dados)
     arquivo_dados.close()
-    for curtida in dados["historico"]["nao_curtidas"]:
-        if curtida["usuario"] == user and curtida["musica"].upper() == nome_musica:
-            print("Você já descurtiu essa música!")
 
-def buscar_musicas():
-    arquivo_dados = open("dados.txt", "r")
-    dados = json.load(arquivo_dados)
-    arquivo_dados.close()
-
+    print("=== BUSCAR MÚSICA ===")
     nome_musica = str(input("Digite o nome da música: ")).upper().strip()
 
     for musica in dados["musicas"]:
         if musica["nome"].upper() == nome_musica:
+            time.sleep(1)
             print("Música encontrada!")
-            print("{} - {} - ({})".format(musica["nome"], musica["artista"], musica["duracao"]))
+            time.sleep(1)
+            print("{} - {} - ({})\n".format(musica["nome"], musica["artista"], musica["duracao"]))
+            break
 
-    c_ou_dc=str(input("Curtir música? (S/N): "))
-    if c_ou_dc=="S":
-        curtir_musicas(user,nome_musica)
-    elif c_ou_dc == "N":
-        descurtir_musicas(user,nome_musica)
+    while True:
+        c_ou_dc=str(input("Curtir música? (S/N): "))
+        time.sleep(2)
+        limpar_tela()
+        if c_ou_dc=="S":
+            curtir_m(user,nome_musica)
+            break
+        elif c_ou_dc == "N":
+            descurtir_m(user,nome_musica)
+            break
+        if musica["nome"].upper() != nome_musica:
+            
+            print("Música não encontrada!")
+            
+            break
+        else:
+           print("Digite S ou N apenas")
+           
+    arquivo_dados.close()
 
-    if not musica["nome"].upper() == nome_musica:
-        print("Música não encontrada!")
+
+def criar_playlist(user):
+
+    arquivo_dados = open("dados.txt", "r")
+    dados = json.load(arquivo_dados)
+    arquivo_dados.close()
+
+    print("=== CRIAR PLAYLIST ===")
+
+    nome_playlist=str(input("\nDigite o nome da playlist: ")).upper().strip()
+
+    nova_playlist=[]
+    while True:
+        nome_musica = str(input("Digite o nome da música (ENTER para finalizar): ")).upper().strip()   
+        
+        if nome_musica=="":
+            
+            break
+
+        for musica in dados["musicas"]:
+        
+          if musica["nome"].upper() == nome_musica:
+             time.sleep(1)
+             print("Música encontrada!")
+             time.sleep(1)
+             print("{} - {} - ({})".format(musica["nome"], musica["artista"], musica["duracao"]))
+             time.sleep(2)
+             nova_playlist.append({
+                    "musica": musica["nome"],
+                    "artista": musica["artista"],
+                    "duracao": musica["duracao"]
+                })
+                 
+    if nova_playlist:
+        dados["playlists"].append({
+        "usuario": user,
+        "playlist": nome_playlist,
+        "musicas": nova_playlist
+    })
+        
+    arquivo_dados = open("dados.txt", "w")
+    json.dump(dados, arquivo_dados, indent=4)
+    arquivo_dados.close()
+
+    print("Playlist criada com sucesso!")
+    time.sleep(2)
+    limpar_tela()
+    
+    
+def editar_playlist(user):
+
+    arquivo_dados = open("dados.txt", "r")
+    dados = json.load(arquivo_dados)
+    arquivo_dados.close()
+
+    print("=== EDITAR PLAYLIST ===")
+    nome_playlist = str(input("Digite o nome da playlist que deseja EDITAR: ")).upper().strip()
+    
+
+    for playlists in dados["playlists"]:
+        if playlists["playlist"].upper() == nome_playlist and user ==playlists["usuario"]:
+            time.sleep(1)
+            print("Playlist encontrada!")
+            time.sleep(1)
+            limpar_tela()
+
+            print("=== EDITAR PLAYLIST ===")
+            
+            print("\n1. Adicionar Música\n2. Remover Música\n3.Voltar")
+
+            escolha=input("\nOpção: ")
+            
+            time.sleep(1)
+            limpar_tela()
+            
+
+            if escolha == '1':
+                limpar_tela()
+
+                for playlist in dados["playlists"]:
+                    if playlist["usuario"] == user and playlist["playlist"].upper() == nome_playlist:
+                       print("Músicas da playlist --> {}: ".format(nome_playlist))
+                       for musica in playlist["musicas"]:
+                           print("{} - {} ({})".format(musica["musica"], musica["artista"], musica["duracao"]))
 
 
+                nome_musica=str(input("Digite o nome da música que deseja ADICIONAR: ")).upper().strip()
 
-def gerenciar_playlist():
+                for musica in dados["musicas"]:
+                    if musica["nome"].upper() == nome_musica:
+                      time.sleep(1)
+                      print("Música encontrada!")
+                      time.sleep(1)
+                      print("{} - {} - ({})".format(musica["nome"], musica["artista"], musica["duracao"]))
+                      musica_encontrada = {
+                            "musica": musica["nome"],
+                            "artista": musica["artista"],
+                            "duracao": musica["duracao"]
+                        }
+                      break
+
+            if escolha == "2":
+
+                for playlist in dados["playlists"]:
+                    if playlist["usuario"] == user and playlist["playlist"].upper() == nome_playlist:
+                       print("Músicas da playlist {}".format(nome_playlist))
+                       for musica in playlist["musicas"]:
+                           print("{} - {} ({})".format(musica["musica"], musica["artista"], musica["duracao"]))
+
+                nome_musica=str(input("Digite o nome da música que deseja REMOVER: ")) 
+
+                for playlist in dados["playlists"]:
+                    if playlist["usuario"] == user and playlist["playlist"].upper() == nome_playlist:
+                        for musica in playlist["musicas"]:
+                            if musica["musica"].upper() == nome_musica:
+                                playlist["musicas"].remove(musica)
+                                print("Música removida com sucesso!")
+                                
+                                
+                                break
+
+                    arquivo_dados = open("dados.txt", "w")
+                    json.dump(dados, arquivo_dados, indent=4)
+                    arquivo_dados.close()
+
+
+            if escolha=="1" and musica_encontrada:
+               
+               playlists["musicas"].append(musica_encontrada)
+               print("Playlist editada com sucesso!")
+               time.sleep(2)
+               limpar_tela()
+               
+
+               arquivo_dados = open("dados.txt", "w")
+               json.dump(dados, arquivo_dados, indent=4)
+               arquivo_dados.close()
+               break
+            
+            if escolha == "3":
+                break
+
+
+def excluir_playlist(user):
+
+    arquivo_dados = open("dados.txt", "r")
+    dados = json.load(arquivo_dados)
+    arquivo_dados.close()
+
+    print("=== EXCLUIR PLAYLIST ===")
+
+    nome_playlist=str(input("Digite o nome da playlist: ")).upper().strip()
+
+    for playlists in dados["playlists"]:
+        if playlists["playlist"].upper() == nome_playlist and user ==playlists["usuario"]:
+            print("Playlist encontrada!")
+            
+            
+            dados["playlists"].remove(playlists)
+            print("Playlist removida com sucesso!")
+            
+            
+
+            arquivo_dados = open("dados.txt", "w")
+            json.dump(dados, arquivo_dados, indent=4)
+            arquivo_dados.close()
+
+            
+def gerenciar_playlist(user):
+
+    print("=== GERENCIAR PLAYLISTS ===")
+
     print("\n1. Criar Playlist\n2. Editar Playlists\n3. Excluir Playlist\n4. Voltar")
-    oq_fazer = input("\nOpção: ")
 
-    if oq_fazer == '1':
-         print('alala')
-    if oq_fazer == '2':
-         print('alala')
-    if oq_fazer == '3':
-        print('alala')
-    if oq_fazer == '4':
-        print('lalala')
+    oq_fazer = input("\nOpção: ")
+    
+    time.sleep(2)
+    limpar_tela()
+
+    while True:
+        if oq_fazer == '1':
+         criar_playlist(user)
+         break
+        if oq_fazer == '2':
+         editar_playlist(user)
+         break
+        if oq_fazer == '3':
+         excluir_playlist(user)
+         break
+        if oq_fazer == '4':
+         break
     
 #Menu secundario 
 def menu_playlist(user):
+    
     while True:
         print("=== BEM-VINDO AO SPOTIFEI ===")
-        print("1. Buscar músicas")
-        print("2. Gerenciar playlists")
-        print("3. Visualizar o histórico")
-        print("4. Sair")
+        print("\n1. Buscar músicas\n2. Gerenciar playlists\n3. Visualizar o histórico\n4. Retirar Curtidas e Descurtidas\n5. Sair")
 
         escolha = input("\nOpção: ")
+        
+        time.sleep(2)
+        limpar_tela()
 
         if escolha == "1":
-            buscar_musicas()
+            buscar_musicas(user)  
+            
         elif escolha == "2":
-             gerenciar_playlist()
+            gerenciar_playlist(user)
+                
+
         elif escolha == "3":
-             vizualizar_hist(user)
+            vizualizar_hist(user)     
+            
         elif escolha == "4":
+            retirar_c_d(user)
+        elif escolha == "5":
             print("=== VOLTANDO AO MENU INICIAL ===")
+            time.sleep(2)
+            limpar_tela()
+            
             break
         else:
             print("Opção inválida. Digite de 1 a 4.")
@@ -226,9 +510,11 @@ while True:
 
     opcao = input("\nOpção: ")
     
+    time.sleep(2)
+    limpar_tela()
     if opcao == "1":
         if cadastro() == True:
-            user = login()  # login depois do cadastro
+            user = login()
             if user:
               menu_playlist(user)
 
@@ -241,7 +527,9 @@ while True:
 
     elif opcao == "3":
         print("=== FECHANDO O APLICATIVO ===")
+        time.sleep(1)
+        limpar_tela()
+        
         break
     else:
         print("Opção inválida. Digite 1, 2 ou 3.")
-        

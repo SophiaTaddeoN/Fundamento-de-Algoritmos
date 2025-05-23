@@ -1,13 +1,13 @@
 {
     "usuarios": [
         {
-            "nome": "Joao",
-            "user": "J",
+            "nome": "Sophia",
+            "user": "S",
             "senha": "123"
         },
         {
-            "nome": "Sophia",
-            "user": "S",
+            "nome": "George",
+            "user": "G",
             "senha": "123"
         }
     ],
@@ -79,7 +79,7 @@
         },
         {
             "nome": "ON THE GROUND",
-            "artista": "ROSÉ",
+            "artista": "ROS\u00c3\u2030",
             "duracao": "3:10"
         },
         {
@@ -259,21 +259,39 @@
         },
         {
             "nome": "HALO",
-            "artista": "Beyoncé",
+            "artista": "Beyonc\u00c3\u00a9",
             "duracao": "4:21"
         }
     ],
-    "playlists": [],
+    "playlists": [
+        {
+            "usuario": "S",
+            "playlist": "TESTE",
+            "musicas": [
+                {
+                    "musica": "WHAT IS LOVE?",
+                    "artista": "TWICE",
+                    "duracao": "3:28"
+                },
+                {
+                    "musica": "FANCY",
+                    "artista": "TWICE",
+                    "duracao": "3:45"
+                }
+            ]
+        }
+    ],
     "historico": {
         "curtidas": [
             {
                 "usuario": "S",
-                "musica": "CINEMA",
-                "artista": "STRAY KIDS",
-                "duracao": "3:41"
-            },
+                "musicas": {
+                    "musica": "FANCY",
+                    "artista": "TWICE",
+                    "duracao": "3:45"
+                }
+            }
         ],
-        "nao_curtidas": [],
-        "busca": []
+        "nao_curtidas": []
     }
 }
