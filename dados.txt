@@ -1,12 +1,7 @@
 {
     "usuarios": [
         {
-            "nome": "Sophia",
-            "user": "S",
-            "senha": "123"
-        },
-        {
-            "nome": "George",
+            "nome": "Gabriela",
             "user": "G",
             "senha": "123"
         }
@@ -265,18 +260,13 @@
     ],
     "playlists": [
         {
-            "usuario": "S",
+            "usuario": "G",
             "playlist": "TESTE",
             "musicas": [
                 {
-                    "musica": "WHAT IS LOVE?",
-                    "artista": "TWICE",
-                    "duracao": "3:28"
-                },
-                {
-                    "musica": "FANCY",
-                    "artista": "TWICE",
-                    "duracao": "3:45"
+                    "musica": "OLD TOWN ROAD",
+                    "artista": "LIL NAS X FT. BILLY RAY CYRUS",
+                    "duracao": "1:53"
                 }
             ]
         }
@@ -284,19 +274,11 @@
     "historico": {
         "curtidas": [
             {
-                "usuario": "S",
+                "usuario": "G",
                 "musicas": {
-                    "musica": "FANCY",
-                    "artista": "TWICE",
-                    "duracao": "3:45"
-                }
-            },
-            {
-                "usuario": "S",
-                "musicas": {
-                    "musica": "JUST DANCE",
-                    "artista": "LADY GAGA",
-                    "duracao": "4:02"
+                    "musica": "HIGHWAY TO HELL",
+                    "artista": "AC/DC",
+                    "duracao": "3:28"
                 }
             }
         ],
@@ -304,9 +286,9 @@
             {
                 "usuario": "G",
                 "musicas": {
-                    "musica": "CINEMA",
-                    "artista": "STRAY KIDS",
-                    "duracao": "3:41"
+                    "musica": "HIGHWAY TO HELL",
+                    "artista": "AC/DC",
+                    "duracao": "3:28"
                 }
             }
         ]
