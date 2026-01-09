@@ -15,7 +15,9 @@ O projeto simula funcionalidades básicas de um aplicativo de música, com foco 
 - Persistência de dados em arquivo
 
 ## 📚 O que aprendi
-- Aplicação de lógica de programação em um sistema completo
-- Uso de estruturas de dados
-- Manipulação de arquivos
-- Organização do código em funções
+- Aplicar lógica de programação no desenvolvimento de um sistema completo
+- Estruturar e organizar dados para simular funcionalidades reais
+- Trabalhar com persistência de dados em arquivos
+- Organizar o código de forma modular, utilizando funções
+- Desenvolver aplicações em Python executadas no terminal
+
